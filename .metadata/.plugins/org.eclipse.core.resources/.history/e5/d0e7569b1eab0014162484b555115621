@@ -10,8 +10,8 @@ public class TestClass {
 
  
    public static void main(String[] args) throws Exception {
-       BufferedImage imageA = ImageIO.read(new File("C:\\User\\Larry Liu\\Pictures\\mercedes.jpg"));
-       BufferedImage imageB = ImageIO.read(new File("C:\\User\\Larry Liu\\Pictures\\mercedes.jpg"));
+       BufferedImage imageA = ImageIO.read(new File("c:/screenCapture.jpg"));
+       BufferedImage imageB = ImageIO.read(new File("c:/screenCapture.jpg"));
 
        long time = -System.currentTimeMillis();
 
