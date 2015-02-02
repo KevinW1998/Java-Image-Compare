@@ -17,10 +17,10 @@ public class TestClass {
        BufferedImage imageB;
        try {
     	   imageA = ImageIO.read(new File("mercedes.jpg"));
-    	   imageB = ImageIO.read(new File("merceAdes.jpg"));
+    	   imageB = ImageIO.read(new File("mercedes.jpg"));
     	   int[] pixelOfA = new int[imageA.getWidth() * imageA.getHeight()];
 	       int[] pixelOfB = new int[imageB.getWidth() * imageB.getHeight()];
-
+//	       long time = -System.currentTimeMillis();
 	       for (int i=0; i<imageA.getHeight();i++){
 	    	  
 	           imageA.getData().getPixel(i, i, pixelOfA);
@@ -44,6 +44,7 @@ public class TestClass {
        
 
        
+//       System.out.println(time + System.currentTimeMillis() + " ms");
 
    }
 }

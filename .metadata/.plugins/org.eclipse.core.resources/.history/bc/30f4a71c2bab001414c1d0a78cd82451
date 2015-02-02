@@ -1,0 +1,36 @@
+package org.kevsoft.test;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.Arrays;
+
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
+
+
+public class TestClass {
+
+ 
+   public static void main(String[] args) throws Exception {
+       BufferedImage imageA = ImageIO.read(new File("mercedes.jpg"));
+       BufferedImage imageB = ImageIO.read(new File("mercedes.jpg"));
+       int[] pixelOfA = new int[imageA.getWidth() * imageA.getHeight()];
+       int[] pixelOfB = new int[imageB.getWidth() * imageB.getHeight()];
+//       long time = -System.currentTimeMillis();
+       for (int i=0; i<=imageA.getHeight();i++){
+    	  
+           imageA.getData().getPixel(i, i, pixelOfA);
+
+           
+           imageB.getData().getPixel(i, i, pixelOfB);
+           if (Arrays.equals(pixelOfA, pixelOfB)==false){
+        	  JOptionPane.showMessageDialog(null, "Bilder sind verschieden");
+           }
+       }
+       
+
+       JOptionPane.showMessageDialog(null, "Bilder sind ident");
+       
+//       System.out.println(time + System.currentTimeMillis() + " ms");
+
+   }
+}
