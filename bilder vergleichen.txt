@@ -1,0 +1,38 @@
+/**
+ *
+ */
+package de.tutorials;
+ 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.Arrays;
+ 
+import javax.imageio.ImageIO;
+ 
+/**
+ * @author tom
+ *
+ */
+public class ImageHashExample {
+ 
+    /**
+     * @param args
+     */
+    public static void main(String[] args) throws Exception {
+        BufferedImage imageA = ImageIO.read(new File("c:/screenCapture.jpg"));
+        BufferedImage imageB = ImageIO.read(new File("c:/screenCapture.jpg"));
+ 
+        long time = -System.currentTimeMillis();
+ 
+        int[] pixelOfA = new int[imageA.getWidth() * imageA.getHeight()];
+        imageA.getData().getPixel(0, 0, pixelOfA);
+ 
+        int[] pixelOfB = new int[imageB.getWidth() * imageB.getHeight()];
+        imageB.getData().getPixel(0, 0, pixelOfB);
+ 
+        System.out.println(Arrays.equals(pixelOfA, pixelOfB));
+ 
+        System.out.println(time + System.currentTimeMillis() + " ms");
+ 
+    }
+}
