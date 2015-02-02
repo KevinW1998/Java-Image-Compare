@@ -1,0 +1,12 @@
+package org.kevsoft.test;
+
+public class TestClass {
+	public static void test () {
+		System.out.println ("hallo");
+	}
+
+	public static void main(String[] args) {
+		
+	}
+
+}
