@@ -6,11 +6,7 @@ import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
-/**
- * Ganz simples Programm von mir, welches zwei gleiche Bilder auf Gleichheit überprüft
- * @author Larry Liu
- *
- */
+
 
 public class TestClass {
 
@@ -21,7 +17,7 @@ public class TestClass {
        BufferedImage imageB;
        try {
     	   imageA = ImageIO.read(new File("mercedes.jpg"));
-    	   imageB = ImageIO.read(new File("mercedes.jpg"));
+    	   imageB = ImageIO.read(new File("merceAdes.jpg"));
     	   int[] pixelOfA = new int[imageA.getWidth() * imageA.getHeight()];
 	       int[] pixelOfB = new int[imageB.getWidth() * imageB.getHeight()];
 

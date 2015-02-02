@@ -21,7 +21,7 @@ public class TestClass {
        BufferedImage imageB;
        try {
     	   imageA = ImageIO.read(new File("mercedes.jpg"));
-    	   imageB = ImageIO.read(new File("mercedes.jpg"));
+    	   imageB = ImageIO.read(new File("merceAdes.jpg"));
     	   int[] pixelOfA = new int[imageA.getWidth() * imageA.getHeight()];
 	       int[] pixelOfB = new int[imageB.getWidth() * imageB.getHeight()];
 
