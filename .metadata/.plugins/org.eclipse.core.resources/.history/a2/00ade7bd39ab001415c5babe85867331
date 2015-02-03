@@ -1,0 +1,55 @@
+package org.kevsoft.test;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
+/**
+ * Ganz simples Programm von mir, welches zwei gleiche Bilder auf Gleichheit überprüft
+ * @author Larry Liu
+ *
+ */
+
+public class TestClass {
+
+   public static void compare (String imagePfadA, String imagePfadB){
+	   BufferedImage imageA;
+       BufferedImage imageB;
+       try {
+    	   imageA = ImageIO.read(new File(imagePfadA));
+    	   imageB = ImageIO.read(new File(imagePfadB));
+    	   
+    	   int[] pixelOfA = new int[imageA.getWidth() * imageA.getHeight()];
+	       int[] pixelOfB = new int[imageB.getWidth() * imageB.getHeight()];
+
+	    	   for (int i=0; i<imageA.getHeight();i++){
+	    	  
+	    		   imageA.getData().getPixel(i, i, pixelOfA);
+
+	           
+	    		   imageB.getData().getPixel(i, i, pixelOfB);
+	    		   System.out.println(imageA.getRGB(i, i));
+	    		   if (Arrays.equals(pixelOfA, pixelOfB)==false){
+	    			   JOptionPane.showMessageDialog(null, "Bilder sind verschieden");
+	    			   break;
+	    		   }
+	    		   if (Arrays.equals(pixelOfA, pixelOfB)){
+	    			   JOptionPane.showMessageDialog(null, "Bilder sind ident");
+	    			   break;
+	    		   }
+	    	  }
+	    
+       } catch (IOException e) {
+		// TODO Auto-generated catch block
+    	   JOptionPane.showMessageDialog(null, "Bilder konnten nicht gefunden werden");
+      
+       }
+       
+   }
+   public static void main(String[] args)  {
+       compare ("motorrad.jpg", "motorrad.jpg");
+
+   }
+}
