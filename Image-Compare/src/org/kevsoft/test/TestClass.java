@@ -14,25 +14,7 @@ import javax.swing.JOptionPane;
 
 public class TestClass {
 
-	public static boolean vergleicheArrays(int[] array1, int[] array2) { //vergleicht zwei Arrays auf Gleichheit
-	    boolean b = false;
-	    for (int i = 0; i < array2.length; i++) {
 
-	        for (int a = 0; a < array1.length; a++) {
-
-	            if (array2[i] == array1[a]) {
-	                b = true;
-	                
-	            } else {
-	                b = false;
-	                
-	                break;
-	            }
-	        }
-	    }
-	    return b;
-	}
-	
 
    public static void compare (String imagePfadA, String imagePfadB){ //vergleicht zwei Arrays auf Gleichheit
 	   BufferedImage imageA;
@@ -55,11 +37,8 @@ public class TestClass {
 	    		   
 	    		   RGBarray = new int [imageA.getHeight()]; //Array, mit RGB Werten
 	    		   RGBarray2 = new int [imageB.getHeight()];
-	    		   imageA.getData().getPixel(i, i, pixelOfA);
-	    		   imageB.getData().getPixel(i, i, pixelOfB);
-	    		 
-	    		   boolean wert= vergleicheArrays (RGBarray,RGBarray2);
-	    		   
+
+	    		  
 	    		   for (int y=0; y<RGBarray.length;y++){ //Füllt das Array mit RGB Werten von Bild A
 	    		   		RGBarray[y] = imageA.getRGB(y, y);
 	    		   	
@@ -68,7 +47,8 @@ public class TestClass {
 	    		   		RGBarray2[z] = imageB.getRGB(z, z);
 	    		   	
 	    		   }
-	    		  
+	    		   
+	    		   boolean wert= Arrays.equals(RGBarray,RGBarray2);
 	    		   if (Arrays.equals(pixelOfA, pixelOfB)&& wert ){ //Nur wenn die Pixel & die Werte im RGB Array übereinstimmen ist das Bild ident
 	    			   JOptionPane.showMessageDialog(null, "Bilder sind ident");
 	    			   break;
@@ -87,6 +67,9 @@ public class TestClass {
        
    }
    public static void main(String[] args)  {
+       compare ("mercedes.jpg", "mercedes.jpg");
+       compare ("mercedes.jpg", "motorrad.jpg");
+       compare ("motorrad.jpg", "mercedes.jpg");
        compare ("motorrad.jpg", "motorrad.jpg");
 
    }
