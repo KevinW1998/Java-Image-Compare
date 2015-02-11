@@ -6,8 +6,8 @@ import java.util.Arrays;
 
 public class SimpleImageCompare extends ImageCompare {
 	public SimpleImageCompare(BufferedImage img1, BufferedImage img2){
-		setFirstImage(img1);
-		setSecondImage(img2);
+		setFirstSourceImage(img1);
+		setSecondSourceImage(img2);
 	}
 	
 	public boolean compare(){
@@ -16,8 +16,8 @@ public class SimpleImageCompare extends ImageCompare {
 		int[] pixelsOfA;
 		int[] pixelsOfB;
 
-		imageA = getFirstImage();
-		imageB = getSecondImage();
+		imageA = getFirstSourceImage();
+		imageB = getSecondSourceImage();
 	   
 		pixelsOfA = new int[imageA.getWidth() * imageA.getHeight()]; //Array, welches so groﬂ ist wie die Anzahl der Pixel
 		pixelsOfB = new int[imageB.getWidth() * imageB.getHeight()];

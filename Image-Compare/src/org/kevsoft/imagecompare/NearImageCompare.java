@@ -5,13 +5,13 @@ import java.awt.image.WritableRaster;
 
 public class NearImageCompare extends ImageCompare {
 	public NearImageCompare(BufferedImage img1, BufferedImage img2){
-		setFirstImage(img1);
-		setSecondImage(img2);
+		setFirstSourceImage(img1);
+		setSecondSourceImage(img2);
 	}
 	
 	public int compare(){
-		WritableRaster wImg1 = getFirstImage().copyData(null);
-		WritableRaster wImg2 = getSecondImage().copyData(null);
+		WritableRaster wImg1 = getFirstOptimizedImage().copyData(null);
+		WritableRaster wImg2 = getSecondOptimizedImage().copyData(null);
 		
 		int pixels1[] = new int[wImg1.getWidth()*wImg1.getHeight()*4];
 		wImg1.getPixels(0, 0, wImg1.getWidth(), wImg1.getHeight(), pixels1);
