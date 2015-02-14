@@ -3,6 +3,8 @@ package org.kevsoft.imagecompare;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 
+import javax.swing.JOptionPane;
+
 public class NearImageCompare extends ImageCompare {
 	public NearImageCompare(BufferedImage img1, BufferedImage img2){
 		setFirstSourceImage(img1);
@@ -45,6 +47,10 @@ public class NearImageCompare extends ImageCompare {
 		  durchschnittRot1 = durchschnittRot1 / anzahlDerPxImg; 
 		  durchschnittGrün1 = durchschnittGrün1 / anzahlDerPxImg;
 		  durchschnittBlau1 = durchschnittBlau1 / anzahlDerPxImg;
+		  
+		  if (durchschnittRot == durchschnittRot1 && durchschnittGrün == durchschnittGrün1 && durchschnittBlau==durchschnittBlau1){
+			  JOptionPane.showMessageDialog(null, "Bild ist 100% ident");
+		  }
 		  return 0; //Im moment 0
 	}
 }
