@@ -23,7 +23,7 @@ public class SimpleImageCompare extends ImageCompare {
 		pixelsOfB = new int[imageB.getWidth() * imageB.getHeight()];
 	  
 		for (int x=0; x<imageA.getWidth();x++){ //Füllt das Array mit RGB Werten von Bild A
-			for (int y = 0; y < imageB.getHeight(); y++){
+			for (int y = 0; y < imageA.getHeight(); y++){
 				pixelsOfA[x*imageA.getWidth() + y] = imageA.getRGB(x, y);
 			}
 		}

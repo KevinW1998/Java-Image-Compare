@@ -23,7 +23,7 @@ public class NearImageCompare extends ImageCompare {
 		  double durchschnittRot=0;
 		  double durchschnittGrün=0;
 		  double durchschnittBlau=0;
-		  double durchschnittRot1=0;
+		  double durchschnittRot1=0; //Von Bild Nummer zwei
 		  double durchschnittGrün1=0;
 		  double durchschnittBlau1=0;
 		  
@@ -42,7 +42,7 @@ public class NearImageCompare extends ImageCompare {
 		  durchschnittRot = durchschnittRot / anzahlDerPxImg;
 		  durchschnittGrün = durchschnittGrün / anzahlDerPxImg;
 		  durchschnittBlau = durchschnittBlau / anzahlDerPxImg;
-		  durchschnittRot1 = durchschnittRot1 / anzahlDerPxImg;
+		  durchschnittRot1 = durchschnittRot1 / anzahlDerPxImg; 
 		  durchschnittGrün1 = durchschnittGrün1 / anzahlDerPxImg;
 		  durchschnittBlau1 = durchschnittBlau1 / anzahlDerPxImg;
 		  return 0; //Im moment 0
