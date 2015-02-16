@@ -30,15 +30,17 @@ public class TestClass {
        System.out.println("==============");
        try{
     	   double compareVal = nic.compare();
+    	   
     	   System.out.println(imagePfadA + " <=> " + imagePfadB);
     	   System.out.println("Similarity: " + compareVal);
+    	   nic.compareColor();
        }catch(Exception e){
     	   System.out.println("Failed to compare images, different sizes?");
        }
        System.out.println("==============");
    }
    public static void main(String[] args)  {
-       compare ("mercedes.jpg", "mercedes.jpg");
+       compare ("ff0000.png", "00ff00.png");
        compare ("mercedes.jpg", "motorrad.jpg");
        compare ("motorrad.jpg", "mercedes.jpg");
        compare ("motorrad.jpg", "motorrad.jpg");

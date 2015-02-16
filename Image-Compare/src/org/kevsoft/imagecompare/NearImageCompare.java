@@ -24,11 +24,8 @@ public class NearImageCompare extends ImageCompare {
 		WritableRaster wImg1 = getFirstOptimizedImage().copyData(null);
 		WritableRaster wImg2 = getSecondOptimizedImage().copyData(null);
 		
-		int pixels1[] = new int[wImg1.getWidth()*wImg1.getHeight()*4];
-		wImg1.getPixels(0, 0, wImg1.getWidth(), wImg1.getHeight(), pixels1);
-		
-		int pixels2[] = new int[wImg2.getWidth()*wImg2.getHeight()*4];
-		wImg2.getPixels(0, 0, wImg2.getWidth(), wImg2.getHeight(), pixels2);
+		int pixels1[] = ImageUtils.getPixels(optimizedImage1);
+		int pixels2[] = ImageUtils.getPixels(optimizedImage2);
 		
 		double pixCount = wImg1.getWidth()*wImg1.getHeight();
 		double diffRed = 0.0;
@@ -52,4 +49,58 @@ public class NearImageCompare extends ImageCompare {
 		
 		return Math.abs((((averageDiffRot + averageDiffGrün + averageDiffBlau) / 3.0 / 256.0) * 100) - 100);
 	}
-}
+	
+	public void compareColor() throws Exception{
+		BufferedImage optimizedImage1 = getFirstOptimizedImage();
+		BufferedImage optimizedImage2 = getSecondOptimizedImage();
+		
+		if(optimizedImage1.getWidth() != optimizedImage2.getWidth() ||
+				optimizedImage2.getHeight() != optimizedImage2.getHeight()){
+			throw new Exception("Different sizes in optimized Image!");
+		}
+		
+		
+		WritableRaster wImg1 = getFirstOptimizedImage().copyData(null);
+		WritableRaster wImg2 = getSecondOptimizedImage().copyData(null);
+		
+		int pixels1[] = ImageUtils.getPixels(optimizedImage1);
+		int pixels2[] = ImageUtils.getPixels(optimizedImage2);
+		
+		double pixCount = wImg1.getWidth()*wImg1.getHeight();
+		double pixCount1 = wImg2.getWidth()*wImg2.getHeight();
+		double rot = 0.0;
+		double grün = 0.0;
+		double blau = 0.0;
+		
+		double rot1 = 0.0;
+		double grün1 = 0.0;
+		double blau1 = 0.0;
+		
+		for (int redIndex = 0; redIndex < pixels1.length; redIndex=redIndex+4 ){
+			rot += pixels1[redIndex];
+			rot1+= pixels2[redIndex];
+			
+		}
+		for (int greenIndex = 1; greenIndex < pixels1.length; greenIndex=greenIndex+4 ){
+			grün += pixels1[greenIndex];
+			grün1 += pixels2[greenIndex];
+		}
+		for (int blueIndex = 2; blueIndex < pixels1.length; blueIndex=blueIndex+4 ){
+			blau += pixels1[blueIndex];
+			blau1 += pixels2[blueIndex];
+		}
+
+	
+		double averageDiffRot = Math.abs( (rot / pixCount)-(rot1 / pixCount1));
+		double averageDiffGrün =Math.abs( ( grün / pixCount)-(grün1 / pixCount1));
+		double averageDiffBlau = Math.abs( (blau / pixCount)-(blau1 / pixCount1));
+
+		System.out.println ("Similarity of red: "+(100-(averageDiffRot/256) *100) );
+		System.out.println ("Similarity of green: " +(100-( averageDiffGrün/256)*100));
+		System.out.println ("Similarity of blue: " +(100-(averageDiffBlau/256)*100));
+		
+	}
+		
+	}
+	
+
