@@ -1,1 +1,0 @@
-2015-02-03 00:48:30,588 [main] WARN  o.e.r.i.c.rcp.TypeBindingAnalyzer - Can't handle class org.eclipse.jdt.internal.compiler.ast.AND_AND_Expression as parent of completion location.
