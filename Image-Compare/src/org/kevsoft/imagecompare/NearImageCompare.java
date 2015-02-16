@@ -11,7 +11,16 @@ public class NearImageCompare extends ImageCompare {
 		setSecondSourceImage(img2);
 	}
 	
-	public int compare(){
+	public double compare() throws Exception{
+		BufferedImage optimizedImage1 = getFirstOptimizedImage();
+		BufferedImage optimizedImage2 = getSecondOptimizedImage();
+		
+		if(optimizedImage1.getWidth() != optimizedImage2.getWidth() ||
+				optimizedImage2.getHeight() != optimizedImage2.getHeight()){
+			throw new Exception("Different sizes in optimized Image!");
+		}
+		
+		
 		WritableRaster wImg1 = getFirstOptimizedImage().copyData(null);
 		WritableRaster wImg2 = getSecondOptimizedImage().copyData(null);
 		
@@ -21,36 +30,26 @@ public class NearImageCompare extends ImageCompare {
 		int pixels2[] = new int[wImg2.getWidth()*wImg2.getHeight()*4];
 		wImg2.getPixels(0, 0, wImg2.getWidth(), wImg2.getHeight(), pixels2);
 		
-		  double anzahlDerPxImg = wImg1.getWidth()*wImg1.getHeight();
-		  double durchschnittRot=0;
-		  double durchschnittGrün=0;
-		  double durchschnittBlau=0;
-		  double durchschnittRot1=0; //Von Bild Nummer zwei
-		  double durchschnittGrün1=0;
-		  double durchschnittBlau1=0;
-		  
-		  for (int i = 0; i< pixels1.length; i= i+ 4 ){
-		   durchschnittRot=durchschnittRot + pixels1[i];
-		   durchschnittRot1=durchschnittRot1 + pixels2[i];
-		  }
-		  for (int x = 1; x< pixels1.length; x= x+ 4 ){
-		   durchschnittGrün=durchschnittGrün + pixels1[x];
-		   durchschnittGrün1=durchschnittGrün1 + pixels2[x];
-		  }
-		  for (int y= 1; y< pixels1.length; y= y+ 4 ){
-		   durchschnittBlau=durchschnittBlau + pixels1[y];
-		   durchschnittBlau1=durchschnittBlau1 + pixels2[y];
-		  }
-		  durchschnittRot = durchschnittRot / anzahlDerPxImg;
-		  durchschnittGrün = durchschnittGrün / anzahlDerPxImg;
-		  durchschnittBlau = durchschnittBlau / anzahlDerPxImg;
-		  durchschnittRot1 = durchschnittRot1 / anzahlDerPxImg; 
-		  durchschnittGrün1 = durchschnittGrün1 / anzahlDerPxImg;
-		  durchschnittBlau1 = durchschnittBlau1 / anzahlDerPxImg;
-		  
-		  if (durchschnittRot == durchschnittRot1 && durchschnittGrün == durchschnittGrün1 && durchschnittBlau==durchschnittBlau1){
-			  JOptionPane.showMessageDialog(null, "Bild ist 100% ident");
-		  }
-		  return 0; //Im moment 0
+		double pixCount = wImg1.getWidth()*wImg1.getHeight();
+		double diffRed = 0.0;
+		double diffGreen = 0.0;
+		double diffBlue = 0.0;
+		
+		for (int redIndex = 0; redIndex < pixels1.length; redIndex=redIndex+4 ){
+			diffRed += Math.abs(pixels1[redIndex] - pixels2[redIndex]);
+		}
+		for (int greenIndex = 1; greenIndex < pixels1.length; greenIndex=greenIndex+4 ){
+			diffGreen += Math.abs(pixels1[greenIndex] - pixels2[greenIndex]);
+		}
+		for (int blueIndex = 2; blueIndex < pixels1.length; blueIndex=blueIndex+4 ){
+			diffBlue += Math.abs(pixels1[blueIndex] - pixels2[blueIndex]);
+		}
+
+		
+		double averageDiffRot = diffRed / pixCount;
+		double averageDiffGrün = diffGreen / pixCount;
+		double averageDiffBlau = diffBlue / pixCount;
+		
+		return Math.abs((((averageDiffRot + averageDiffGrün + averageDiffBlau) / 3.0 / 256.0) * 100) - 100);
 	}
 }
