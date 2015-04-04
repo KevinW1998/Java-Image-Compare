@@ -24,6 +24,8 @@ if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
 #define M_PI 3.14159265f
 #endif
 
+#include <cstdio>
+
 /*
 * Given the adaptation luminance, this function returns the
 * threshold of visibility in cd per m^2
@@ -159,7 +161,7 @@ bool Yee_Compare(CompareArgs &args)
 	float *aB = new float[dim];
 	float *bB = new float[dim];
 
-	if (args.Verbose) printf("Converting RGB to XYZ\n");
+    if (args.Verbose) printf("Converting RGB to XYZ\n");
 	
 	unsigned int x, y, w, h;
 	w = args.ImgA->Get_Width();
@@ -183,7 +185,7 @@ bool Yee_Compare(CompareArgs &args)
 		}
 	}
 	
-	if (args.Verbose) printf("Constructing Laplacian Pyramids\n");
+    if (args.Verbose) printf("Constructing Laplacian Pyramids\n");
 	
 	LPyramid *la = new LPyramid(aLum, w, h);
 	LPyramid *lb = new LPyramid(bLum, w, h);
@@ -191,7 +193,7 @@ bool Yee_Compare(CompareArgs &args)
 	float num_one_degree_pixels = (float) (2 * tan( args.FieldOfView * 0.5 * M_PI / 180) * 180 / M_PI);
 	float pixels_per_degree = w / num_one_degree_pixels;
 	
-	if (args.Verbose) printf("Performing test\n");
+    if (args.Verbose) printf("Performing test\n");
 	
 	float num_pixels = 1;
 	unsigned int adaptation_level = 0;
@@ -292,7 +294,6 @@ bool Yee_Compare(CompareArgs &args)
 
 	char different[100];
 	sprintf(different, "%d pixels are different\n", pixels_failed);
-
         // Always output image difference if requested.
 	if (args.ImgDiff) {
 		/*if (args.ImgDiff->WriteToFile(args.ImgDiff->Get_Name().c_str())) {

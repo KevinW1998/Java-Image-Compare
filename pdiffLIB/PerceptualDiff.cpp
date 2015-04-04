@@ -26,7 +26,7 @@ if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
 #include "Metric.h"
 
 
-
+/*
 #ifdef WIN32
 #include <windows.h>
 #define DLL_EXPORT extern "C" __declspec(dllexport)
@@ -39,7 +39,7 @@ DLL_EXPORT BOOL WINAPI DllMain(
     return TRUE;
 }
 #endif
-
+*/
 /*int main(int argc, char **argv)
 {
 	CompareArgs args;

@@ -16,7 +16,7 @@ public class NearImageCompare extends ImageCompare {
 		BufferedImage optimizedImage2 = getSecondOptimizedImage();
 		
 		if(optimizedImage1.getWidth() != optimizedImage2.getWidth() ||
-				optimizedImage2.getHeight() != optimizedImage2.getHeight()){
+				optimizedImage1.getHeight() != optimizedImage2.getHeight()){
 			throw new Exception("Different sizes in optimized Image!");
 		}
 		

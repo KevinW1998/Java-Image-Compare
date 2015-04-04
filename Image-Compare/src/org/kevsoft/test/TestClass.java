@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 import org.kevsoft.imagecompare.NearImageCompare;
+import org.kevsoft.imagecompare.PdiffImageCompare;
 import org.kevsoft.imagecompare.SimpleImageCompare;
 
 /**
@@ -35,15 +36,45 @@ public class TestClass {
     	   System.out.println("Similarity: " + compareVal);
     	   nic.compareColor();
        }catch(Exception e){
-    	   System.out.println("Failed to compare images, different sizes?");
+    	   e.printStackTrace();
+    	   //System.out.println("Failed to compare images, different sizes?");
        }
        System.out.println("==============");
    }
+   
+   public static void pdiffCompare(String imagePfadA, String imagePfadB) {
+	   PdiffImageCompare pdiff;
+	   try {
+		   pdiff = new PdiffImageCompare(ImageIO.read(new File(imagePfadA)), ImageIO.read(new File(imagePfadB)));
+		   pdiff.setSizeScale(new Dimension(600, 600));
+	   }catch(Exception e) {
+		   e.printStackTrace();
+    	   return;
+	   }
+	   System.out.println("==============");
+	   System.out.println("==============");
+       try{
+    	   
+    	   System.out.println(imagePfadA + " <=> " + imagePfadB);
+    	   if(pdiff.compare()) {
+    		   System.out.println("SUCCESS");
+    	   } else {
+    		   System.out.println("FAILED");
+    	   }
+       }catch(Exception e){
+    	   e.printStackTrace();
+    	   System.out.println("Failed to compare images, different sizes?");
+       }
+       System.out.println("==============");
+	   
+   }
+   
+   
    public static void main(String[] args)  {
-       compare ("ff0000.png", "00ff00.png");
-       compare ("mercedes.jpg", "motorrad.jpg");
-       compare ("motorrad.jpg", "mercedes.jpg");
-       compare ("motorrad.jpg", "motorrad.jpg");
+	   pdiffCompare ("00ff00.png", "ff0000.png");
+	   pdiffCompare ("mercedes.jpg", "motorrad.jpg");
+	   pdiffCompare ("motorrad.jpg", "mercedes.jpg");
+	   pdiffCompare ("motorrad.jpg", "motorrad.jpg");
 
    }
 }

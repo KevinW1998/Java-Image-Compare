@@ -5,12 +5,17 @@ import java.awt.Graphics;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 
 public class ImageUtils {
 	public static int[] getPixels(BufferedImage img){
 		int pixels[] = new int[img.getWidth()*img.getHeight()*4];
 		img.copyData(null).getPixels(0, 0, img.getWidth(), img.getHeight(), pixels);
 		return pixels;
+	}
+	
+	public static byte[] getBytePixels(BufferedImage img) {
+		return ((DataBufferByte)img.getRaster().getDataBuffer()).getData();
 	}
 	
 	

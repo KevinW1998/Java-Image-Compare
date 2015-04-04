@@ -53,7 +53,11 @@ public:
 	unsigned int Get(int i) const { return Data[i]; }
 	const std::string &Get_Name(void) const { return Name; }
     RGBAImage* DownSample() const;
-	
+    static RGBAImage* newImageByData(int w, int h, unsigned char* data){
+        RGBAImage* img = new RGBAImage(w,h);
+        memcpy(img->Data, data, w*h*4);
+        return img;
+    }
 	
 protected:
 	int Width;
