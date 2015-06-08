@@ -1,0 +1,3 @@
+"C:\Program Files (x86)\CMake\bin\cmake.exe" -E remove -f CMakeFiles\pdiff.dir/objects.a
+C:\PROGRA~2\CODEBL~1\MinGW\bin\ar.exe cr CMakeFiles\pdiff.dir/objects.a @CMakeFiles\pdiff.dir\objects1.rsp
+C:\PROGRA~2\CODEBL~1\MinGW\bin\G__~1.EXE   -Wl,--kill-at  -static-libgcc -static-libstdc++  -shared -o libpdiff.dll -Wl,--out-implib,libpdiff.dll.a -Wl,--major-image-version,0,--minor-image-version,0 -Wl,--whole-archive CMakeFiles\pdiff.dir/objects.a -Wl,--no-whole-archive @CMakeFiles\pdiff.dir\linklibs.rsp

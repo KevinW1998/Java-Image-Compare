@@ -1,0 +1,104 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Program Files/Java/jdk1.8.0_05/include/jni.h
+stdio.h
+-
+stdarg.h
+-
+jni_md.h
+C:/Program Files/Java/jdk1.8.0_05/include/jni_md.h
+
+C:/Program Files/Java/jdk1.8.0_05/include/win32/jni_md.h
+
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/CompareArgs.cpp
+CompareArgs.h
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/CompareArgs.h
+RGBAImage.h
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/RGBAImage.h
+cstdio
+-
+cstdlib
+-
+cstring
+-
+
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/CompareArgs.h
+string
+-
+
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/LPyramid.cpp
+LPyramid.h
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/LPyramid.h
+
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/LPyramid.h
+
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/Metric.cpp
+Metric.h
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/Metric.h
+CompareArgs.h
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/CompareArgs.h
+RGBAImage.h
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/RGBAImage.h
+LPyramid.h
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/LPyramid.h
+math.h
+-
+cstdio
+-
+
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/Metric.h
+
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/PerceptualDiff.cpp
+stdio.h
+-
+string.h
+-
+math.h
+-
+string
+-
+LPyramid.h
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/LPyramid.h
+RGBAImage.h
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/RGBAImage.h
+CompareArgs.h
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/CompareArgs.h
+Metric.h
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/Metric.h
+windows.h
+-
+
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/RGBAImage.cpp
+RGBAImage.h
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/RGBAImage.h
+cstdio
+-
+cstring
+-
+
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/RGBAImage.h
+string
+-
+
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/org_kevsoft_imagecompare_PdiffImageCompare.cpp
+org_kevsoft_imagecompare_PdiffImageCompare.h
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/org_kevsoft_imagecompare_PdiffImageCompare.h
+CompareArgs.h
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/CompareArgs.h
+RGBAImage.h
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/RGBAImage.h
+Metric.h
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/Metric.h
+iostream
+-
+
+C:/Users/Larry Liu/Desktop/ProjectIrian/workspace/kevsoft-java-image-compare-14b2ee368718/pdiffLIB/org_kevsoft_imagecompare_PdiffImageCompare.h
+jni.h
+-
+
