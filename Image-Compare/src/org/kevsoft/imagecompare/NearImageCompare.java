@@ -1,3 +1,4 @@
+
 package org.kevsoft.imagecompare;
 
 import java.awt.image.BufferedImage;
@@ -104,3 +105,4 @@ public class NearImageCompare extends ImageCompare {
 	}
 	
 
+}

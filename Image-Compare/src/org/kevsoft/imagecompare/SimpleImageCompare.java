@@ -1,3 +1,4 @@
+
 package org.kevsoft.imagecompare;
 
 import java.awt.image.BufferedImage;
