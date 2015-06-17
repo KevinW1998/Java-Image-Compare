@@ -39,7 +39,7 @@ ENDIF()
 
 
 link_directories(${JDK_PATH}/lib)
-add_library(${PROJECT_NAME} SHARED PerceptualDiff.cpp Metric.h Metric.cpp LPyramid.h Lpyramid.cpp RGBAImage.h RGBAImage.cpp CompareArgs.cpp CompareArgs.h)
+add_library(${PROJECT_NAME} SHARED PerceptualDiff.cpp Metric.h Metric.cpp LPyramid.h Lpyramid.cpp RGBAImage.h RGBAImage.cpp CompareArgs.cpp CompareArgs.h ImageCompare.cpp ImageCompare.h)
 target_link_libraries(${PROJECT_NAME} jvm)
 
 
