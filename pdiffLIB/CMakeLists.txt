@@ -1,14 +1,16 @@
 # Example Command Line:
 # -DJDK_PATH:PATH="C:\Program Files (x86)\Java\jdk1.8.0_20"
-# -DUSE_FREEIMAGE:BOOL=OFF
+# -DUSE_FREEIMAGE:BOOL=ON
+# -DCOMPILE_EXECUTABLE:BOOL=ON
 
-# --> -DJDK_PATH:PATH="C:\Program Files (x86)\Java\jdk1.8.0_20" -DUSE_FREEIMAGE:BOOL=ON
+# --> -DJDK_PATH:PATH="C:\Program Files (x86)\Java\jdk1.8.0_20" -DUSE_FREEIMAGE:BOOL=ON -DCOMPILE_EXECUTABLE:BOOL=ON
 
 project(pdiff)
 
 # Settings
 set(JDK_PATH "C:/Program Files (x86)/Java/jdk1.8.0_25" CACHE PATH "The path to the JDK")
 set(USE_FREEIMAGE ON CACHE BOOL "Set to on, if you want to use freeimage! (Free Image must be compiled!)")
+set(COMPILE_EXECUTABLE ON CACHE BOOL "Set to on, to compile the test unit/executable")
 MESSAGE( STATUS "[Image Compare] [User-Value] JDK Path:         " ${JDK_PATH} )
 
 
@@ -42,13 +44,17 @@ ELSE()
 ENDIF()
 
 #libraries
+set(FILES_CORE PerceptualDiff.cpp Metric.h Metric.cpp LPyramid.h Lpyramid.cpp RGBAImage.h RGBAImage.cpp CompareArgs.cpp CompareArgs.h ImageCompare.cpp ImageCompare.h)
 
 
 # Add link dirs
 MESSAGE( STATUS "[Image Compare] Adding JDK libraries" )
 link_directories(${JDK_PATH}/lib)
 # Create library
-add_library(${PROJECT_NAME} SHARED PerceptualDiff.cpp Metric.h Metric.cpp LPyramid.h Lpyramid.cpp RGBAImage.h RGBAImage.cpp CompareArgs.cpp CompareArgs.h ImageCompare.cpp ImageCompare.h)
+add_library(${PROJECT_NAME} SHARED ${FILES_CORE})
+IF(COMPILE_EXECUTABLE)
+  add_executable(${PROJECT_NAME}-test ${FILES_CORE} executable/main.cpp)
+ENDIF(COMPILE_EXECUTABLE)
 # Hints for linker
 MESSAGE( STATUS "[Image Compare] Link JDK libraries" )
 target_link_libraries(${PROJECT_NAME} jvm)
