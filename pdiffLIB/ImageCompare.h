@@ -17,7 +17,7 @@ private:
      int downsample;
 
 void test ();
-RGBAImage getFirstSourceImage();
+
 public:
     PdiffImageCompare() {
         fov = 45.0;
