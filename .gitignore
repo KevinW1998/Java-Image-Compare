@@ -1,4 +1,9 @@
+# Special Folders
 /bin/
+/libs/FreeImage/Dist
+
+# Special Files
+*.o
 
 *.pydevproject
 .metadata

@@ -18,6 +18,9 @@ if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
 #define _RGBAIMAGE_H
 
 #include <string>
+#ifdef DEF_USE_FREEIMAGE
+#include <FreeImage.h>
+#endif
 
 /** Class encapsulating an image containing R,G,B,A channels.
  *
@@ -58,6 +61,45 @@ public:
         memcpy(img->Data, data, w*h*4);
         return img;
     }
+
+#ifdef DEF_USE_FREEIMAGE
+    static RGBAImage* ReadFromFile(const char* filename)
+    {
+        const FREE_IMAGE_FORMAT fileType = FreeImage_GetFileType(filename);
+        if(FIF_UNKNOWN == fileType)
+        {
+            printf("Unknown filetype %s\n", filename);
+            return 0;
+        }
+
+        FIBITMAP* freeImage = 0;
+        if(FIBITMAP* temporary = FreeImage_Load(fileType, filename, 0))
+        {
+            freeImage = FreeImage_ConvertTo32Bits(temporary);
+            FreeImage_Unload(temporary);
+        }
+        if(!freeImage)
+        {
+            printf( "Failed to load the image %s\n", filename);
+            return 0;
+        }
+
+        const int w = FreeImage_GetWidth(freeImage);
+        const int h = FreeImage_GetHeight(freeImage);
+
+        RGBAImage* result = new RGBAImage(w, h, filename);
+        // Copy the image over to our internal format, FreeImage has the scanlines bottom to top though.
+        unsigned int* dest = result->Data;
+        for( int y=0; y < h; y++, dest += w )
+        {
+            const unsigned int* scanline = (const unsigned int*)FreeImage_GetScanLine(freeImage, h - y - 1 );
+            memcpy(dest, scanline, sizeof(dest[0]) * w);
+        }
+
+        FreeImage_Unload(freeImage);
+        return result;
+    }
+#endif
 	
 protected:
 	int Width;
