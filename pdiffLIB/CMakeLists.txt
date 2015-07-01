@@ -62,7 +62,7 @@ MESSAGE( STATUS "[Image Compare] Adding JDK libraries" )
 # Find link dir
 FIND_LIBRARY(JDK_LINK_DIR jvm
     ${JDK_PATH}/lib
-    ${JDK_PATH}/amd64/server
+    ${JDK_PATH}/jre/lib/amd64/server
   )
 
 
