@@ -58,7 +58,14 @@ set(FILES_JAVA org_kevsoft_imagecompare_PdiffImageCompare.cpp org_kevsoft_imagec
 
 # Add link dirs
 MESSAGE( STATUS "[Image Compare] Adding JDK libraries" )
-link_directories(${JDK_PATH}/lib)
+
+# Find link dir
+FIND_LIBRARY(JDK_LINK_DIR jvm
+    ${JDK_PATH}/lib
+    ${JDK_PATH}/amd64/server
+  )
+
+
 # Create library
 add_library(${PROJECT_NAME} SHARED ${FILES_CORE} ${FILES_JAVA})
 IF(COMPILE_EXECUTABLE)
@@ -66,7 +73,14 @@ IF(COMPILE_EXECUTABLE)
 ENDIF(COMPILE_EXECUTABLE)
 # Hints for linker
 MESSAGE( STATUS "[Image Compare] Link JDK libraries" )
-target_link_libraries(${PROJECT_NAME} jvm)
+
+
+IF(JDK_LINK_DIR)
+  target_link_libraries(${PROJECT_NAME} ${JDK_LINK_DIR})
+ELSE()
+  MESSAGE( SEND_ERROR "[Image Compare] Did not find JDK library!" )
+ENDIF(JDK_LINK_DIR)
+
 
 MESSAGE( STATUS "[Image Compare] Set output path" )
 INSTALL(TARGETS ${PROJECT_NAME} DESTINATION bin)
