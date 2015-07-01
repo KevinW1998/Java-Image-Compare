@@ -17,7 +17,9 @@ if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
 #ifndef _RGAIMAGE_H
 #define _RGBAIMAGE_H
 
+#include <cstring>
 #include <string>
+
 #ifdef DEF_USE_FREEIMAGE
 #include <FreeImage.h>
 #endif
@@ -58,7 +60,7 @@ public:
     RGBAImage* DownSample() const;
     static RGBAImage* newImageByData(int w, int h, unsigned char* data){
         RGBAImage* img = new RGBAImage(w,h);
-        memcpy(img->Data, data, w*h*4);
+        std::memcpy(img->Data, data, w*h*4);
         return img;
     }
 
