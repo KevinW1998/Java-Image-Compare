@@ -3,7 +3,11 @@
 # -DUSE_FREEIMAGE:BOOL=ON
 # -DCOMPILE_EXECUTABLE:BOOL=ON
 
-# --> -DJDK_PATH:PATH="C:\Program Files (x86)\Java\jdk1.8.0_20" -DUSE_FREEIMAGE:BOOL=ON -DCOMPILE_EXECUTABLE:BOOL=ON
+# Examples:
+# --> -DJDK_PATH:PATH="C:\Program Files (x86)\Java\jdk1.8.0_20" -DUSE_FREEIMAGE:BOOL=OFF -DCOMPILE_EXECUTABLE:BOOL=OFF
+# --> -DJDK_PATH:PATH="C:\Program Files (x86)\Java\jdk1.8.0_25" -DUSE_FREEIMAGE:BOOL=OFF -DCOMPILE_EXECUTABLE:BOOL=OFF
+
+# bin is the recommended build folder!
 
 project(pdiff)
 
@@ -30,28 +34,33 @@ endif()
 
 
 
-MESSAGE( STATUS "[Image Compare] Adding JDK_Path" )
+MESSAGE( STATUS "[Image Compare] Adding JDK Includes" )
 #includes
-include_directories(${JDK_PATH}/include)
-IF(WIN32)
-  MESSAGE( STATUS "[Image Compare] Adding JDK_Path for Windows" )
-  # include for windows
-  include_directories(${JDK_PATH}/include/win32)
+IF(EXISTS ${JDK_PATH}/include)
+  include_directories(${JDK_PATH}/include)
+  IF(WIN32)
+    MESSAGE( STATUS "[Image Compare] Adding JDK Includes for Windows" )
+    # include for windows
+    include_directories(${JDK_PATH}/include/win32)
+  ELSE()
+    MESSAGE( STATUS "[Image Compare] Adding JDK Includes for Linux and others." )
+    # set includes for other systems
+    include_directories(${JDK_PATH}/include/linux)
+  ENDIF()
 ELSE()
-  MESSAGE( STATUS "[Image Compare] Adding JDK_Path for Linux and others." )
-  # set includes for other systems
-  include_directories(${JDK_PATH}/include/linux)
+  MESSAGE( SEND_ERROR "[Image Compare] Did not find JDK includes! Wrong JDK Path?" )
 ENDIF()
+
 
 #libraries
 set(FILES_CORE PerceptualDiff.cpp Metric.h Metric.cpp LPyramid.h Lpyramid.cpp RGBAImage.h RGBAImage.cpp CompareArgs.cpp CompareArgs.h ImageCompare.cpp ImageCompare.h)
-
+set(FILES_JAVA org_kevsoft_imagecompare_PdiffImageCompare.cpp org_kevsoft_imagecompare_PdiffImageCompare.h)
 
 # Add link dirs
 MESSAGE( STATUS "[Image Compare] Adding JDK libraries" )
 link_directories(${JDK_PATH}/lib)
 # Create library
-add_library(${PROJECT_NAME} SHARED ${FILES_CORE})
+add_library(${PROJECT_NAME} SHARED ${FILES_CORE} ${FILES_JAVA})
 IF(COMPILE_EXECUTABLE)
   add_executable(${PROJECT_NAME}-test ${FILES_CORE} executable/main.cpp)
 ENDIF(COMPILE_EXECUTABLE)
