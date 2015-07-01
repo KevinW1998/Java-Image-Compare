@@ -113,7 +113,7 @@ public class PdiffImageCompare extends ImageCompare {
 	 * @since 02.04.2015
 	 */
 	public void setColorfactor(double colorfactor) {
-		if(fov < 0.0 || fov > 1.0)
+		if(colorfactor < 0.0 || colorfactor > 1.0)
 			throw new IllegalArgumentException("Fov must be between 0.1 and 89.9");
 		this.colorfactor = colorfactor;
 	}
@@ -136,16 +136,8 @@ public class PdiffImageCompare extends ImageCompare {
 	}
 	
 	private native boolean nativeCompare(int thresholdPixels, byte[] pixOfImage1, int width1, int height1, byte[] pixOfImage2, int width2, int height2);
+	private native int nativeCompareFailedPixels(byte[] pixOfImage1, int width1, int height1, byte[] pixOfImage2, int width2, int height2);
 	
-	/**
-	 * Compares the two images with pdiff.
-	 * @return true If the pdiff test succeed.
-	 * @throws Exception When the sizes of the two images are diffrent.
-	 * @since 02.04.2015
-	 */
-	public boolean compare() throws Exception {
-		return compare(100);
-	}
 	
 	/**
 	 * 
@@ -154,7 +146,7 @@ public class PdiffImageCompare extends ImageCompare {
 	 * @throws Exception
 	 * @since 02.04.2015
 	 */
-	public boolean compare(int thresholdPixels) throws Exception {
+	public boolean compare(int thresholdPixels) throws RuntimeException {
 		BufferedImage img1Orig = getFirstOptimizedImage();
 		BufferedImage img2Orig = getSecondOptimizedImage();
 		
@@ -173,11 +165,36 @@ public class PdiffImageCompare extends ImageCompare {
 		
 		if(img1.getWidth() != img2.getWidth() ||
 				img1.getHeight() != img2.getHeight()){
-			throw new Exception("Different sizes in optimized Image!");
+			throw new RuntimeException("Different sizes in optimized Image!");
 		}
 		
 		return nativeCompare(thresholdPixels, ImageUtils.getBytePixels(img1), img1.getWidth(), img1.getHeight(), ImageUtils.getBytePixels(img2), img2.getWidth(), img2.getHeight());
 	}
 	
+	
+	public int compare() throws RuntimeException {
+		BufferedImage img1Orig = getFirstOptimizedImage();
+		BufferedImage img2Orig = getSecondOptimizedImage();
+		
+		BufferedImage img1 = new BufferedImage(img1Orig.getWidth(), img1Orig.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+		BufferedImage img2 = new BufferedImage(img2Orig.getWidth(), img2Orig.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+		
+		Graphics g1 = img1.getGraphics();
+		Graphics g2 = img2.getGraphics();
+		
+		g1.drawImage(img1Orig, 0, 0, null);
+		g2.drawImage(img2Orig, 0, 0, null);
+		
+		g1.dispose();
+		g2.dispose();
+		
+		
+		if(img1.getWidth() != img2.getWidth() ||
+				img1.getHeight() != img2.getHeight()){
+			throw new RuntimeException("Different sizes in optimized Image!");
+		}
+		
+		return nativeCompareFailedPixels(ImageUtils.getBytePixels(img1), img1.getWidth(), img1.getHeight(), ImageUtils.getBytePixels(img2), img2.getWidth(), img2.getHeight());
+	}
 	
 }

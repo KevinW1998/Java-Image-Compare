@@ -55,9 +55,11 @@ CompareArgs::CompareArgs()
 	FieldOfView = 45.0f;
 	Gamma = 2.2f;
 	ThresholdPixels = 100;
-	Luminance = 100.0f;
-   ColorFactor = 1.0f;
-   DownSample = 0;
+    Luminance = 100.0f;
+    ColorFactor = 1.0f;
+    DownSample = 0;
+
+    pixelsFailed = 0;
 }
 
 CompareArgs::~CompareArgs()

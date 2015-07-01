@@ -4,6 +4,7 @@
 
 # Special Files
 *.o
+pdifftest_*
 
 *.pydevproject
 .metadata

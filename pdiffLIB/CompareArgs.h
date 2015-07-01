@@ -29,22 +29,29 @@ public:
 	~CompareArgs();
 	void Print_Args();
 	
+    // IN:
 	RGBAImage		*ImgA;				// Image A
 	RGBAImage		*ImgB;				// Image B
-	RGBAImage		*ImgDiff;			// Diff image
 	bool			Verbose;			// Print lots of text or not
 	bool			LuminanceOnly;		// Only consider luminance; ignore chroma channels in the comparison.
 	float			FieldOfView;		// Field of view in degrees
 	float			Gamma;				// The gamma to convert to linear color space
 	float			Luminance;			// the display's luminance
 	unsigned int	ThresholdPixels;	// How many pixels different to ignore
-	std::string		ErrorStr;			// Error string
-  // How much color to use in the metric.
-  // 0.0 is the same as LuminanceOnly = true,
-  // 1.0 means full strength.
-  float ColorFactor;
-  // How much to down sample image before comparing, in powers of 2.
-  int DownSample;
+
+
+    // How much color to use in the metric.
+    // 0.0 is the same as LuminanceOnly = true,
+    // 1.0 means full strength.
+    float ColorFactor;
+    // How much to down sample image before comparing, in powers of 2.
+    int DownSample;
+
+
+    // OUT:
+    RGBAImage		*ImgDiff;			// Diff image
+    unsigned int    pixelsFailed;       // Pixels failed
+    std::string		ErrorStr;			// Error string
 };
 
 #endif

@@ -307,6 +307,13 @@ bool Yee_Compare(CompareArgs &args)
 		}*/
 	}
 
+    args.pixelsFailed = pixels_failed;
+
+    //If threshold pixels is -1, then ignore it and just return true.
+    if(args.ThresholdPixels == -1){
+        return true;
+    }
+
 	if (pixels_failed < args.ThresholdPixels) {
 		args.ErrorStr = "Images are perceptually indistinguishable\n";
                 args.ErrorStr += different;
