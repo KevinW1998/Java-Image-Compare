@@ -102,7 +102,6 @@ public class NearImageCompare extends ImageCompare {
 		
 	}
 		
-	}
+}
 	
 
-}
