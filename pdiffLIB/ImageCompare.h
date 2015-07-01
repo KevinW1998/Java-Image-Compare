@@ -7,8 +7,8 @@ class ImageCompare {
 
     //Fields
 private:
-     RGBAImage  firstImage;
-     RGBAImage  secondImage;
+     RGBAImage*  firstImage;
+     RGBAImage*  secondImage;
      double fov;
      double gamma;
      double luminance;
@@ -16,10 +16,20 @@ private:
      double colorfactor;
      int downsample;
 
-void test ();
+    void test ();
 
 public:
-    PdiffImageCompare() {
+    ImageCompare()
+    {
+        fov = 45.0;
+        gamma = 2.2;
+        luminance = 100.0;
+        luminanceonly = false;
+        colorfactor = 1.0;
+        downsample = 0;
+    }
+
+    ImageCompare(RGBAImage* firstImgToCompare, RGBAImage* secondImageToCompare) : firstImage(firstImgToCompare), secondImage(secondImageToCompare) {
         fov = 45.0;
         gamma = 2.2;
         luminance = 100.0;
