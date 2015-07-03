@@ -45,10 +45,10 @@ public class NearImageCompare extends ImageCompare {
 
 		
 		double averageDiffRot = diffRed / pixCount;
-		double averageDiffGrün = diffGreen / pixCount;
+		double averageDiffGruen = diffGreen / pixCount;
 		double averageDiffBlau = diffBlue / pixCount;
 		
-		return Math.abs((((averageDiffRot + averageDiffGrün + averageDiffBlau) / 3.0 / 256.0) * 100) - 100);
+		return Math.abs((((averageDiffRot + averageDiffGruen + averageDiffBlau) / 3.0 / 256.0) * 100) - 100);
 	}
 	
 	public void compareColor() throws Exception{
@@ -70,11 +70,11 @@ public class NearImageCompare extends ImageCompare {
 		double pixCount = wImg1.getWidth()*wImg1.getHeight();
 		double pixCount1 = wImg2.getWidth()*wImg2.getHeight();
 		double rot = 0.0;
-		double grün = 0.0;
+		double gruen = 0.0;
 		double blau = 0.0;
 		
 		double rot1 = 0.0;
-		double grün1 = 0.0;
+		double gruen1 = 0.0;
 		double blau1 = 0.0;
 		
 		for (int redIndex = 0; redIndex < pixels1.length; redIndex=redIndex+4 ){
@@ -83,8 +83,8 @@ public class NearImageCompare extends ImageCompare {
 			
 		}
 		for (int greenIndex = 1; greenIndex < pixels1.length; greenIndex=greenIndex+4 ){
-			grün += pixels1[greenIndex];
-			grün1 += pixels2[greenIndex];
+			gruen += pixels1[greenIndex];
+			gruen1 += pixels2[greenIndex];
 		}
 		for (int blueIndex = 2; blueIndex < pixels1.length; blueIndex=blueIndex+4 ){
 			blau += pixels1[blueIndex];
@@ -93,11 +93,11 @@ public class NearImageCompare extends ImageCompare {
 
 	
 		double averageDiffRot = Math.abs( (rot / pixCount)-(rot1 / pixCount1));
-		double averageDiffGrün =Math.abs( ( grün / pixCount)-(grün1 / pixCount1));
+		double averageDiffGruen =Math.abs( ( gruen / pixCount)-(gruen1 / pixCount1));
 		double averageDiffBlau = Math.abs( (blau / pixCount)-(blau1 / pixCount1));
 
 		System.out.println ("Similarity of red: "+(100-(averageDiffRot/256) *100) );
-		System.out.println ("Similarity of green: " +(100-( averageDiffGrün/256)*100));
+		System.out.println ("Similarity of green: " +(100-( averageDiffGruen/256)*100));
 		System.out.println ("Similarity of blue: " +(100-(averageDiffBlau/256)*100));
 		
 	}
