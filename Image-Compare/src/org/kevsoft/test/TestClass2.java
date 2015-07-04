@@ -17,6 +17,7 @@ public class TestClass2 {
 
 	public static void test(String imagePfadA, String imagePfadB, String ausgabedateipfad) throws IOException {
 		ArrayList<Double> liste = new ArrayList<Double>();
+		BufferedWriter bw = new BufferedWriter(new FileWriter(ausgabedateipfad));
 		double d = 0;
 		while (d < 89) {
 			PdiffImageCompare pdiff;   
@@ -36,8 +37,7 @@ public class TestClass2 {
 			liste.add (erg);
 			
 			
-			BufferedWriter bw = new BufferedWriter(new FileWriter(ausgabedateipfad));
-			bw.write("hallo");
+			
 			for (int i=0; i< liste.size(); i++){
 				bw.write("/n"+liste.get(i) );
 			}
