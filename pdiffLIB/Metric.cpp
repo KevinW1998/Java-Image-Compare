@@ -143,7 +143,7 @@ bool Yee_Compare(CompareArgs &args)
 	}
 	if (identical) {
 		args.ErrorStr = "Images are binary identical\n";
-		return true;
+        return false;
 	}
 	
 	// assuming colorspaces are in Adobe RGB (1998) convert to XYZ

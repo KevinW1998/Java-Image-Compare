@@ -40,7 +40,6 @@ public class TestClass {
     	   nic.compareColor();
        }catch(Exception e){
     	   e.printStackTrace();
-    	   //System.out.println("Failed to compare images, different sizes?");
        }
        System.out.println("==============");
    }
@@ -64,7 +63,7 @@ public class TestClass {
 	   
 	   System.out.println("==============");   
 	   System.out.println(imagePfadA + " <=> " + imagePfadB);
-	   System.out.println("Similar :" + pdiff.comparePercent() + "%"); 
+	   System.out.println("Similar: " + pdiff.comparePercent() + "%"); 
        System.out.println("==============");
 	   
    }

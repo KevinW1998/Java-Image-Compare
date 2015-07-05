@@ -189,18 +189,8 @@ public class PdiffImageCompare extends ImageCompare {
 		BufferedImage img1Orig = getFirstOptimizedImage();
 		BufferedImage img2Orig = getSecondOptimizedImage();
 		
-		BufferedImage img1 = new BufferedImage(img1Orig.getWidth(), img1Orig.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
-		BufferedImage img2 = new BufferedImage(img2Orig.getWidth(), img2Orig.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
-		
-		Graphics g1 = img1.getGraphics();
-		Graphics g2 = img2.getGraphics();
-		
-		g1.drawImage(img1Orig, 0, 0, null);
-		g2.drawImage(img2Orig, 0, 0, null);
-		
-		g1.dispose();
-		g2.dispose();
-		
+		BufferedImage img1 = ImageUtils.transformTo4ByteARGB(img1Orig);
+		BufferedImage img2 = ImageUtils.transformTo4ByteARGB(img2Orig);
 		
 		if(img1.getWidth() != img2.getWidth() ||
 				img1.getHeight() != img2.getHeight()){

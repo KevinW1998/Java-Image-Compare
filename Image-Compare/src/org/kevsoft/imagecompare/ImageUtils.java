@@ -6,7 +6,10 @@ import java.awt.Graphics;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
+import java.awt.image.Raster;
 
 public class ImageUtils {
 	public static int[] getPixels(BufferedImage img){
@@ -43,5 +46,25 @@ public class ImageUtils {
 	
 	public static BufferedImage scaleToFixSize(Dimension d, BufferedImage img){
 		return scaleToFixSize((int)d.getWidth(), (int)d.getHeight(), img);
+	}
+	
+	
+	
+	public static boolean is4ByteARGB(BufferedImage img) {
+		return img.getColorModel().getTransparency() == ColorModel.TRANSLUCENT &&
+				!img.getColorModel().isAlphaPremultiplied() &&
+				img.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE;
+	}
+	
+	public static BufferedImage transformTo4ByteARGB(BufferedImage img) {
+		if(ImageUtils.is4ByteARGB(img))
+			return img;
+		else {
+			BufferedImage newImg =  new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+			Graphics g1 = newImg.getGraphics();
+			g1.drawImage(img, 0, 0, null);
+			g1.dispose();
+			return newImg;
+		}
 	}
 }
