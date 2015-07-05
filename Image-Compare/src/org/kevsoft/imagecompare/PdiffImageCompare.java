@@ -2,6 +2,14 @@ package org.kevsoft.imagecompare;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+
+/**
+ * This class is using the pdiff algorithm to compare two images. It however requires the native library "pdiffLib".
+ * This library is based on the work of Hector Yee (http://pdiff.sourceforge.net/)
+ * @author Waldock
+ * @author Liu
+ * @version 05.07.2015
+ */
 public class PdiffImageCompare extends ImageCompare {
 	static {
 		System.loadLibrary("libpdiff");
@@ -140,10 +148,10 @@ public class PdiffImageCompare extends ImageCompare {
 	
 	
 	/**
-	 * 
-	 * @param thresholdPixels
-	 * @return
-	 * @throws Exception
+	 * Tests the image if it is similar. If you want to check how many pixels failed the test then use the compare overload.
+	 * @param thresholdPixels How many pixels are allowed to fail, until the test doesn't pass it. 
+	 * @return If the test was passed, given by the thresholdPixels.
+	 * @throws RuntimeException This exception is thrown when the size of both images are different. Setting a fixed size (with .setSizeScale) will prevent this exception.
 	 * @since 02.04.2015
 	 */
 	public boolean compare(int thresholdPixels) throws RuntimeException {
@@ -171,7 +179,12 @@ public class PdiffImageCompare extends ImageCompare {
 		return nativeCompare(thresholdPixels, ImageUtils.getBytePixels(img1), img1.getWidth(), img1.getHeight(), ImageUtils.getBytePixels(img2), img2.getWidth(), img2.getHeight());
 	}
 	
-	
+	/**
+	 * Checks how many pixels are not similar between the two given images (Failed Pixels).
+	 * @return The number of failed pixels in the test.
+	 * @throws RuntimeException This exception is thrown when the size of both images are different. Setting a fixed size (with .setSizeScale) will prevent this exception.
+	 * @since 05.07.2015
+	 */
 	public int compare() throws RuntimeException {
 		BufferedImage img1Orig = getFirstOptimizedImage();
 		BufferedImage img2Orig = getSecondOptimizedImage();
@@ -195,6 +208,18 @@ public class PdiffImageCompare extends ImageCompare {
 		}
 		
 		return nativeCompareFailedPixels(ImageUtils.getBytePixels(img1), img1.getWidth(), img1.getHeight(), ImageUtils.getBytePixels(img2), img2.getWidth(), img2.getHeight());
+	}
+	
+	/**
+	 * Compares two images and returns the similarity of the two images.
+	 * @return The similarity in percent. 
+	 * @throws RuntimeException This exception is thrown when the size of both images are different. Setting a fixed size (with .setSizeScale) will prevent this exception. 
+	 * @since 05.07.2015
+	 */
+	public double comparePercent() throws RuntimeException {
+		BufferedImage img1 = getFirstOptimizedImage();
+		int totalPixels = img1.getWidth() * img1.getHeight();
+		return 100.0 - ((double)compare()) / (double)totalPixels * 100.0;
 	}
 	
 }

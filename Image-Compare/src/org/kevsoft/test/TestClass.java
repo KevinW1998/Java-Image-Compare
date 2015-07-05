@@ -62,14 +62,9 @@ public class TestClass {
 	   pdiff.setFov(15.0);
 	   pdiff.setColorfactor(1.0);
 	   
-	   BufferedImage img = pdiff.getFirstOptimizedImage();
-	   int pixels = img.getWidth() * img.getHeight();
-	   
 	   System.out.println("==============");   
 	   System.out.println(imagePfadA + " <=> " + imagePfadB);
-	   int failedPixels = pdiff.compare();
-	   System.out.println("Failed pixels: " + failedPixels);
-	   System.out.println("Total pixels: "  + pixels);
+	   System.out.println("Similar :" + pdiff.comparePercent() + "%"); 
        System.out.println("==============");
 	   
    }

@@ -4,6 +4,11 @@ package org.kevsoft.imagecompare;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
+/**
+ * This class is the base for all image compare algorithm.
+ * @author Waldock
+ * @version 05.07.2015
+ */
 public abstract class ImageCompare {
 	//Fields
 	private BufferedImage firstImage;
