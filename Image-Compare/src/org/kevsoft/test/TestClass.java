@@ -76,7 +76,7 @@ public class TestClass {
    
    
    public static void main(String[] args)  {
-	   pdiffCompare ("mercedes.jpg", "mercedes1.jpg");
+	   pdiffCompare ("pdifftest_mercedes.jpg", "pdifftest_mercedes1.jpg");
 
    }
 }
