@@ -9,14 +9,6 @@ extern "C" {
 #endif
 /*
  * Class:     org_kevsoft_imagecompare_PdiffImageCompare
- * Method:    nativeCompare
- * Signature: (I[BII[BII)Z
- */
-JNIEXPORT jboolean JNICALL Java_org_kevsoft_imagecompare_PdiffImageCompare_nativeCompare
-  (JNIEnv *, jobject, jint, jbyteArray, jint, jint, jbyteArray, jint, jint);
-
-/*
- * Class:     org_kevsoft_imagecompare_PdiffImageCompare
  * Method:    nativeCompareFailedPixels
  * Signature: ([BII[BII)I
  */

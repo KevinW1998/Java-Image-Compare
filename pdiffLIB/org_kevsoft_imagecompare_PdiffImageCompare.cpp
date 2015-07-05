@@ -5,20 +5,6 @@
 #include "Metric.h"
 #include <iostream>
 
-extern "C" JNIEXPORT jboolean JNICALL Java_org_kevsoft_imagecompare_PdiffImageCompare_nativeCompare
-  (JNIEnv * env, jobject theCompareObject, jint thresholdPixels,
-   jbyteArray pixOfImage1, jint width1, jint height1,
-   jbyteArray pixOfImage2, jint width2, jint height2){
-    return Java_org_kevsoft_imagecompare_PdiffImageCompare_nativeCompareFailedPixels(env,
-                                                                                     theCompareObject,
-                                                                                     pixOfImage1,
-                                                                                     width1,
-                                                                                     height1,
-                                                                                     pixOfImage2,
-                                                                                     width2,
-                                                                                     height2) <= thresholdPixels;
-}
-
 extern "C" JNIEXPORT jint JNICALL Java_org_kevsoft_imagecompare_PdiffImageCompare_nativeCompareFailedPixels
   (JNIEnv * env, jobject theCompareObject,
    jbyteArray pixOfImage1, jint width1, jint height1,

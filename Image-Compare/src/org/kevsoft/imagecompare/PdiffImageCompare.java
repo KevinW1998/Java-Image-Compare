@@ -143,9 +143,7 @@ public class PdiffImageCompare extends ImageCompare {
 		this.downsample = downsample;
 	}
 	
-	private native boolean nativeCompare(int thresholdPixels, byte[] pixOfImage1, int width1, int height1, byte[] pixOfImage2, int width2, int height2);
 	private native int nativeCompareFailedPixels(byte[] pixOfImage1, int width1, int height1, byte[] pixOfImage2, int width2, int height2);
-	
 	
 	/**
 	 * Tests the image if it is similar. If you want to check how many pixels failed the test then use the compare overload.
@@ -155,28 +153,7 @@ public class PdiffImageCompare extends ImageCompare {
 	 * @since 02.04.2015
 	 */
 	public boolean compare(int thresholdPixels) throws RuntimeException {
-		BufferedImage img1Orig = getFirstOptimizedImage();
-		BufferedImage img2Orig = getSecondOptimizedImage();
-		
-		BufferedImage img1 = new BufferedImage(img1Orig.getWidth(), img1Orig.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
-		BufferedImage img2 = new BufferedImage(img2Orig.getWidth(), img2Orig.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
-		
-		Graphics g1 = img1.getGraphics();
-		Graphics g2 = img2.getGraphics();
-		
-		g1.drawImage(img1Orig, 0, 0, null);
-		g2.drawImage(img2Orig, 0, 0, null);
-		
-		g1.dispose();
-		g2.dispose();
-		
-		
-		if(img1.getWidth() != img2.getWidth() ||
-				img1.getHeight() != img2.getHeight()){
-			throw new RuntimeException("Different sizes in optimized Image!");
-		}
-		
-		return nativeCompare(thresholdPixels, ImageUtils.getBytePixels(img1), img1.getWidth(), img1.getHeight(), ImageUtils.getBytePixels(img2), img2.getWidth(), img2.getHeight());
+		return compare() <= thresholdPixels;
 	}
 	
 	/**
