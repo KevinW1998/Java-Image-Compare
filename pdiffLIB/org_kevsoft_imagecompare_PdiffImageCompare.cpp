@@ -3,7 +3,10 @@
 #include "CompareArgs.h"
 #include "RGBAImage.h"
 #include "Metric.h"
+#include "ThreadedQueue.h"
+
 #include <iostream>
+#include <utility>
 
 extern "C" JNIEXPORT jint JNICALL Java_org_kevsoft_imagecompare_PdiffImageCompare_nativeCompareFailedPixels
   (JNIEnv * env, jobject theCompareObject,
@@ -55,7 +58,11 @@ extern "C" JNIEXPORT jint JNICALL Java_org_kevsoft_imagecompare_PdiffImageCompar
 extern "C" JNIEXPORT JNIEXPORT void JNICALL Java_org_kevsoft_imagecompare_PdiffImageCompare_nativeCompareFailedPixelsMultiple
     (JNIEnv *env, jclass staticPdiffClass, jobjectArray objectToTest, jobject out){
     int lengthOfArray = env->GetArrayLength(objectToTest);
+    int threads = 8;
     for(int i = 0; i < lengthOfArray; i++){
         jobject nextPdiffObject = env->GetObjectArrayElement(objectToTest, i);
+        ThreadedQueue<jobject> in;
+        ThreadedQueue<std::pair<jobject, int> > out;
+
     }
 }
