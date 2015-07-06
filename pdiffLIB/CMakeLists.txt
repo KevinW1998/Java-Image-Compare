@@ -33,24 +33,26 @@ IF(MINGW)
 endif()
 
 
-
-MESSAGE( STATUS "[Image Compare] Adding JDK Includes" )
 #includes
-IF(EXISTS ${JDK_PATH}/include)
-  include_directories(${JDK_PATH}/include)
-  IF(WIN32)
-    MESSAGE( STATUS "[Image Compare] Adding JDK Includes for Windows" )
-    # include for windows
-    include_directories(${JDK_PATH}/include/win32)
-  ELSE()
-    MESSAGE( STATUS "[Image Compare] Adding JDK Includes for Linux and others." )
-    # set includes for other systems
-    include_directories(${JDK_PATH}/Contents/Home/include)
-  ENDIF()
+MESSAGE( STATUS "[Image Compare] Adding JDK Includes" )
+FIND_PATH(JDK_INCLUDES_DIR jni.h
+  ${JDK_PATH}/include # for windows and linux
+  ${JDK_PATH}/Contents/Home/include # for mac
+)
+FIND_PATH(JDK_MD_INCLUDES_DIR jni_md.h
+  ${JDK_PATH}/include/win32 # for windows
+  ${JDK_PATH}/Contents/Home/include/darwin # for mac
+)
+IF(JDK_INCLUDES_DIR)
+  include_directories(${JDK_INCLUDES_DIR})
 ELSE()
-  MESSAGE( SEND_ERROR "[Image Compare] Did not find JDK includes! Wrong JDK Path?" )
+  MESSAGE( SEND_ERROR "[Image Compare] Did not find JDK (jni.h) includes! Wrong JDK Path?" )
 ENDIF()
-
+IF(JDK_MD_INCLUDES_DIR)
+  include_directories(${JDK_MD_INCLUDES_DIR})
+ELSE()
+  MESSAGE( SEND_ERROR "[Image Compare] Did not find JDK (jni_md.h) includes! Wrong JDK Path?" )
+ENDIF()
 
 #libraries
 set(FILES_CORE PerceptualDiff.cpp Metric.h Metric.cpp LPyramid.h LPyramid.cpp RGBAImage.h RGBAImage.cpp CompareArgs.cpp CompareArgs.h ImageCompare.cpp ImageCompare.h)
@@ -65,7 +67,6 @@ FIND_LIBRARY(JDK_LINK_DIR jvm
     ${JDK_PATH}/jre/lib/amd64/server
     ${JDK_PATH}/Contents/Home/jre/lib/server
   )
-
 
 # Create library
 add_library(${PROJECT_NAME} SHARED ${FILES_CORE} ${FILES_JAVA})
