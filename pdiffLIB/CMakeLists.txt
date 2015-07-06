@@ -45,7 +45,7 @@ IF(EXISTS ${JDK_PATH}/include)
   ELSE()
     MESSAGE( STATUS "[Image Compare] Adding JDK Includes for Linux and others." )
     # set includes for other systems
-    include_directories(${JDK_PATH}/include/linux)
+    include_directories(${JDK_PATH}/Contents/Home/include)
   ENDIF()
 ELSE()
   MESSAGE( SEND_ERROR "[Image Compare] Did not find JDK includes! Wrong JDK Path?" )
@@ -63,6 +63,7 @@ MESSAGE( STATUS "[Image Compare] Adding JDK libraries" )
 FIND_LIBRARY(JDK_LINK_DIR jvm
     ${JDK_PATH}/lib
     ${JDK_PATH}/jre/lib/amd64/server
+    ${JDK_PATH}/Contents/Home/jre/lib/server
   )
 
 
