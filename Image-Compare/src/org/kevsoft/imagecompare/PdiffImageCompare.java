@@ -2,6 +2,9 @@ package org.kevsoft.imagecompare;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class is using the pdiff algorithm to compare two images. It however requires the native library "pdiffLib".
@@ -143,7 +146,7 @@ public class PdiffImageCompare extends ImageCompare {
 		this.downsample = downsample;
 	}
 	
-	private native int nativeCompareFailedPixels(byte[] pixOfImage1, int width1, int height1, byte[] pixOfImage2, int width2, int height2);
+	
 	
 	/**
 	 * Tests the image if it is similar. If you want to check how many pixels failed the test then use the compare overload.
@@ -188,5 +191,20 @@ public class PdiffImageCompare extends ImageCompare {
 		int totalPixels = img1.getWidth() * img1.getHeight();
 		return 100.0 - ((double)compare()) / (double)totalPixels * 100.0;
 	}
+	
+	public static HashMap<PdiffImageCompare, Integer> compareMultiple(Collection<PdiffImageCompare> allImageCompare){
+		return compareMultipleParallel((PdiffImageCompare[]) allImageCompare.toArray(new PdiffImageCompare[allImageCompare.size()]));
+	}
+	
+	public static HashMap<PdiffImageCompare, Integer> compareMultipleParallel(PdiffImageCompare[] allImageCompare){
+		HashMap<PdiffImageCompare, Integer> ret = new HashMap<PdiffImageCompare, Integer>();
+		nativeCompareFailedPixelsMultiple(allImageCompare, ret);
+		return ret;
+	}
+	
+	
+	//private natives:
+	private native int nativeCompareFailedPixels(byte[] pixOfImage1, int width1, int height1, byte[] pixOfImage2, int width2, int height2);
+	private static native void nativeCompareFailedPixelsMultiple(PdiffImageCompare[] allImageCompare, HashMap<PdiffImageCompare, Integer> out);
 	
 }

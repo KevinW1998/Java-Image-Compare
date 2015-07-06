@@ -49,3 +49,13 @@ extern "C" JNIEXPORT jint JNICALL Java_org_kevsoft_imagecompare_PdiffImageCompar
     }
 
 }
+
+
+
+extern "C" JNIEXPORT JNIEXPORT void JNICALL Java_org_kevsoft_imagecompare_PdiffImageCompare_nativeCompareFailedPixelsMultiple
+    (JNIEnv *env, jclass staticPdiffClass, jobjectArray objectToTest, jobject out){
+    int lengthOfArray = env->GetArrayLength(objectToTest);
+    for(int i = 0; i < lengthOfArray; i++){
+        jobject nextPdiffObject = env->GetObjectArrayElement(objectToTest, i);
+    }
+}

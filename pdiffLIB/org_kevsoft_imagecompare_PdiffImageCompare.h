@@ -15,6 +15,14 @@ extern "C" {
 JNIEXPORT jint JNICALL Java_org_kevsoft_imagecompare_PdiffImageCompare_nativeCompareFailedPixels
   (JNIEnv *, jobject, jbyteArray, jint, jint, jbyteArray, jint, jint);
 
+/*
+ * Class:     org_kevsoft_imagecompare_PdiffImageCompare
+ * Method:    nativeCompareFailedPixelsMultiple
+ * Signature: ([Lorg/kevsoft/imagecompare/PdiffImageCompare;Ljava/util/HashMap;)V
+ */
+JNIEXPORT void JNICALL Java_org_kevsoft_imagecompare_PdiffImageCompare_nativeCompareFailedPixelsMultiple
+  (JNIEnv *, jclass, jobjectArray, jobject);
+
 #ifdef __cplusplus
 }
 #endif
