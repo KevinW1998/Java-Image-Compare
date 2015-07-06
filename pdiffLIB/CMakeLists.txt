@@ -55,7 +55,7 @@ ELSE()
 ENDIF()
 
 #libraries
-set(FILES_CORE PerceptualDiff.cpp Metric.h Metric.cpp LPyramid.h LPyramid.cpp RGBAImage.h RGBAImage.cpp CompareArgs.cpp CompareArgs.h ImageCompare.cpp ImageCompare.h util.h util.cpp)
+set(FILES_CORE PerceptualDiff.cpp Metric.h Metric.cpp LPyramid.h LPyramid.cpp RGBAImage.h RGBAImage.cpp CompareArgs.cpp CompareArgs.h ImageCompare.cpp ImageCompare.h util.h util.cpp ThreadedQueue.h)
 set(FILES_JAVA org_kevsoft_imagecompare_PdiffImageCompare.cpp org_kevsoft_imagecompare_PdiffImageCompare.h)
 
 # Add link dirs
