@@ -55,7 +55,7 @@ ELSE()
 ENDIF()
 
 #libraries
-set(FILES_CORE PerceptualDiff.cpp Metric.h Metric.cpp LPyramid.h LPyramid.cpp RGBAImage.h RGBAImage.cpp CompareArgs.cpp CompareArgs.h ImageCompare.cpp ImageCompare.h)
+set(FILES_CORE PerceptualDiff.cpp Metric.h Metric.cpp LPyramid.h LPyramid.cpp RGBAImage.h RGBAImage.cpp CompareArgs.cpp CompareArgs.h ImageCompare.cpp ImageCompare.h util.h util.cpp)
 set(FILES_JAVA org_kevsoft_imagecompare_PdiffImageCompare.cpp org_kevsoft_imagecompare_PdiffImageCompare.h)
 
 # Add link dirs
@@ -130,6 +130,12 @@ IF(USE_FREEIMAGE)
 ELSE()
   MESSAGE( STATUS "[Image Compare] [USING NOT FREEIMAGE]" )
 ENDIF(USE_FREEIMAGE)
+
+# activate C++11
+MESSAGE( STATUS "[Image Compare] Force C++11 support" )
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
+
 
 #target_link_libraries(${PROJECT_NAME} jvm)
 

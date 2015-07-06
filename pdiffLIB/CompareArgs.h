@@ -39,6 +39,9 @@ public:
 	float			Luminance;			// the display's luminance
 	unsigned int	ThresholdPixels;	// How many pixels different to ignore
 
+    // Debug:
+    bool            outputDebugTime;        //True, if the time taken should be outputted
+
 
     // How much color to use in the metric.
     // 0.0 is the same as LuminanceOnly = true,

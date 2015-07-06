@@ -58,6 +58,7 @@ CompareArgs::CompareArgs()
     Luminance = 100.0f;
     ColorFactor = 1.0f;
     DownSample = 0;
+    outputDebugTime = false;
 
     pixelsFailed = 0;
 }

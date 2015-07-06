@@ -20,6 +20,9 @@ if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
 #include "LPyramid.h"
 #include <math.h>
 
+#include "util.h"
+#include <iostream>
+
 #ifndef M_PI
 #define M_PI 3.14159265f
 #endif
@@ -126,12 +129,17 @@ void XYZToLAB(float x, float y, float z, float &L, float &A, float &B)
 
 bool Yee_Compare(CompareArgs &args)
 {
-	if ((args.ImgA->Get_Width() != args.ImgB->Get_Width()) ||
+    using namespace std::chrono;
+    system_clock::time_point beforeCompare = system_clock::now();
+
+
+    if ((args.ImgA->Get_Width() != args.ImgB->Get_Width()) ||
 		(args.ImgA->Get_Height() != args.ImgB->Get_Height())) {
 		args.ErrorStr = "Image dimensions do not match\n";
 		return false;
 	}
 	
+    system_clock::time_point beforeBinaryTest = system_clock::now();
 	unsigned int i, dim;
 	dim = args.ImgA->Get_Width() * args.ImgA->Get_Height();
 	bool identical = true;
@@ -141,6 +149,10 @@ bool Yee_Compare(CompareArgs &args)
 		  break;
 		}
 	}
+    if(args.outputDebugTime){
+        std::cout << "[pdiff time test] Time taken for binary test: " << nanoDiffSysTimeToNow(beforeBinaryTest).count() << "ns" << std::endl;
+    }
+
 	if (identical) {
 		args.ErrorStr = "Images are binary identical\n";
         return false;
@@ -163,6 +175,7 @@ bool Yee_Compare(CompareArgs &args)
 
     if (args.Verbose) printf("Converting RGB to XYZ\n");
 	
+    system_clock::time_point beforeConverting = system_clock::now();
 	unsigned int x, y, w, h;
 	w = args.ImgA->Get_Width();
 	h = args.ImgA->Get_Height();
@@ -184,17 +197,25 @@ bool Yee_Compare(CompareArgs &args)
 			bLum[i] = bY[i] * args.Luminance;
 		}
 	}
+    if(args.outputDebugTime){
+        std::cout << "[pdiff time test] Time taken for converting: " << nanoDiffSysTimeToNow(beforeConverting).count() << "ns" << std::endl;
+    }
 	
     if (args.Verbose) printf("Constructing Laplacian Pyramids\n");
 	
+    system_clock::time_point beforeLPyramid = system_clock::now();
 	LPyramid *la = new LPyramid(aLum, w, h);
 	LPyramid *lb = new LPyramid(bLum, w, h);
 	
 	float num_one_degree_pixels = (float) (2 * tan( args.FieldOfView * 0.5 * M_PI / 180) * 180 / M_PI);
 	float pixels_per_degree = w / num_one_degree_pixels;
-	
+    if(args.outputDebugTime){
+        std::cout << "[pdiff time test] Time taken for lpyramid: " << nanoDiffSysTimeToNow(beforeLPyramid).count() << "ns" << std::endl;
+    }
+
     if (args.Verbose) printf("Performing test\n");
 	
+    system_clock::time_point beforeMainTest = system_clock::now();
 	float num_pixels = 1;
 	unsigned int adaptation_level = 0;
 	for (i = 0; i < MAX_PYR_LEVELS; i++) {
@@ -291,6 +312,13 @@ bool Yee_Compare(CompareArgs &args)
 	if (bA) delete bA;
 	if (aB) delete aB;
 	if (bB) delete bB;
+
+    if(args.outputDebugTime){
+        std::cout << "[pdiff time test] Time taken for test: " << nanoDiffSysTimeToNow(beforeMainTest).count() << "ns" << std::endl;
+    }
+    if(args.outputDebugTime){
+        std::cout << "[pdiff time test] Time taken for this whole operation: " << nanoDiffSysTimeToNow(beforeCompare).count() << "ns" << std::endl;
+    }
 
 	char different[100];
 	sprintf(different, "%d pixels are different\n", pixels_failed);

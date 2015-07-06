@@ -34,6 +34,7 @@ extern "C" JNIEXPORT jint JNICALL Java_org_kevsoft_imagecompare_PdiffImageCompar
     args.ColorFactor = (float)colorfactor;
     args.DownSample = downsample;
 
+    args.outputDebugTime = false;
     args.Verbose = true;
 
     env->ReleaseByteArrayElements(pixOfImage1, iPixOfImage1, JNI_ABORT);
