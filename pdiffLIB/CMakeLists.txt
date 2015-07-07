@@ -12,7 +12,7 @@
 project(pdiff)
 
 # Settings
-set(JDK_PATH "C:/Program Files (x86)/Java/jdk1.8.0_25" CACHE PATH "The path to the JDK")
+set(JDK_PATH "C:/Java/jdk1.8.0_45" CACHE PATH "The path to the JDK")
 set(USE_FREEIMAGE ON CACHE BOOL "Set to on, if you want to use freeimage! (Free Image must be compiled!)")
 set(COMPILE_EXECUTABLE ON CACHE BOOL "Set to on, to compile the test unit/executable")
 MESSAGE( STATUS "[Image Compare] [User-Value] JDK Path:         " ${JDK_PATH} )
@@ -46,6 +46,7 @@ FIND_PATH(JDK_MD_INCLUDES_DIR jni_md.h
   ${JDK_PATH}/include/win32 # for windows
   ${JDK_PATH}/Contents/Home/include/darwin # for mac
 )
+
 IF(JDK_INCLUDES_DIR)
   include_directories(${JDK_INCLUDES_DIR})
 ELSE()
