@@ -97,7 +97,6 @@ public class TestClass {
 			pdiffComparer[i].setSizeScale(new Dimension(600, 600));
 		}
 		
-		//HashMap<PdiffImageCompare, Integer> results = PdiffImageCompare.compareMultipleParallel(pdiffComparer);
 		HashMap<PdiffImageCompare, Double> resultPercent = PdiffImageCompare.comparePercentMultipleParallel(pdiffComparer);
 		for(PdiffImageCompare nextComparer : pdiffComparer) {
 			System.out.println("Results: " + resultPercent.get(nextComparer) + "%"); 

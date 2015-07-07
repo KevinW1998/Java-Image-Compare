@@ -190,18 +190,47 @@ public class PdiffImageCompare extends ImageCompare {
 		return 100.0 - ((double)compare()) / (double)totalPixels * 100.0;
 	}
 	
+	/**
+	 * Compare multiple images parallel. The number of threads used is determined by number of cores used for the JVM.
+	 * @param allImageCompare A collection with all comparer objects.
+	 * @return A HashMap, where the <b>key</b> is the comparer object and the <b>value</b> is the similarity in percent.
+	 * @since 07.07.2015
+	 */
 	public static HashMap<PdiffImageCompare, Double> comparePercentMultipleParallel(Collection<PdiffImageCompare> allImageCompare){
 		return comparePercentMultipleParallel((PdiffImageCompare[]) allImageCompare.toArray(new PdiffImageCompare[allImageCompare.size()]), Runtime.getRuntime().availableProcessors());
 	}
 	
+	/**
+	 * Compare multiple images parallel. The number of threads used is determined by number of cores used for the JVM.
+	 * @param allImageCompare An array with all comparer objects.
+	 * @throws RuntimeException This exception is thrown when the size of both images are different. Setting a fixed size (with .setSizeScale) will prevent this exception. 
+	 * @return A HashMap, where the <b>key</b> is the comparer object and the <b>value</b> is the similarity in percent.
+	 * @since 07.07.2015
+	 */
 	public static HashMap<PdiffImageCompare, Double> comparePercentMultipleParallel(PdiffImageCompare[] allImageCompare){
 		return comparePercentMultipleParallel(allImageCompare, Runtime.getRuntime().availableProcessors());
 	}
 	
+	/**
+	 * Compare multiple images parallel. The number of threads used is determined by number of cores used for the JVM.
+	 * @param allImageCompare A collection with all comparer objects.
+	 * @param numberOfThreads The number of threads, which should be executed.
+	 * @throws RuntimeException This exception is thrown when the size of both images are different. Setting a fixed size (with .setSizeScale) will prevent this exception. 
+	 * @return A HashMap, where the <b>key</b> is the comparer object and the <b>value</b> is the similarity in percent.
+	 * @since 07.07.2015
+	 */
 	public static HashMap<PdiffImageCompare, Double> comparePercentMultipleParallel(Collection<PdiffImageCompare> allImageCompare, int numberOfThreads){
 		return comparePercentMultipleParallel((PdiffImageCompare[]) allImageCompare.toArray(new PdiffImageCompare[allImageCompare.size()]), numberOfThreads);
 	}
 	
+	/**
+	 * Compare multiple images parallel. The number of threads used is determined by number of cores used for the JVM.
+	 * @param allImageCompare An array with all comparer objects.
+	 * @param numberOfThreads The number of threads, which should be executed.
+	 * @throws RuntimeException This exception is thrown when the size of both images are different. Setting a fixed size (with .setSizeScale) will prevent this exception. 
+	 * @return A HashMap, where the <b>key</b> is the comparer object and the <b>value</b> is the similarity in percent.
+	 * @since 07.07.2015
+	 */
 	public static HashMap<PdiffImageCompare, Double> comparePercentMultipleParallel(PdiffImageCompare[] allImageCompare, int numberOfThreads){
 		HashMap<PdiffImageCompare, Integer> ret = new HashMap<PdiffImageCompare, Integer>();
 		nativeCompareFailedPixelsMultiple(allImageCompare, numberOfThreads, ret);
@@ -217,19 +246,49 @@ public class PdiffImageCompare extends ImageCompare {
 		return percentRet;
 	}
 	
-	
+	/**
+	 * Compare multiple images parallel. The number of threads used is determined by number of cores used for the JVM.
+	 * @param allImageCompare A collection with all comparer objects.
+	 * @throws RuntimeException This exception is thrown when the size of both images are different. Setting a fixed size (with .setSizeScale) will prevent this exception. 
+	 * @return A HashMap, where the <b>key</b> is the comparer object and the <b>value</b> is the number of failed pixels.
+	 * @since 07.07.2015
+	 */
 	public static HashMap<PdiffImageCompare, Integer> compareMultipleParallel(Collection<PdiffImageCompare> allImageCompare){
 		return compareMultipleParallel((PdiffImageCompare[]) allImageCompare.toArray(new PdiffImageCompare[allImageCompare.size()]), Runtime.getRuntime().availableProcessors());
 	}
 	
+	
+	/**
+	 * Compare multiple images parallel. The number of threads used is determined by number of cores used for the JVM.
+	 * @param allImageCompare An array with all comparer objects.
+	 * @throws RuntimeException This exception is thrown when the size of both images are different. Setting a fixed size (with .setSizeScale) will prevent this exception. 
+	 * @return A HashMap, where the <b>key</b> is the comparer object and the <b>value</b> is the number of failed pixels.
+	 * @since 07.07.2015
+	 */
 	public static HashMap<PdiffImageCompare, Integer> compareMultipleParallel(PdiffImageCompare[] allImageCompare){
 		return compareMultipleParallel(allImageCompare, Runtime.getRuntime().availableProcessors());
 	}
 	
+	/**
+	 * Compares multiple images parallel.
+	 * @param allImageCompare A collection with all comparer objects.
+	 * @param numberOfThreads The number of threads, which should be executed.
+	 * @throws RuntimeException This exception is thrown when the size of both images are different. Setting a fixed size (with .setSizeScale) will prevent this exception. 
+	 * @return A HashMap, where the <b>key</b> is the comparer object and the <b>value</b> is the number of failed pixels.
+	 * @since 07.07.2015
+	 */
 	public static HashMap<PdiffImageCompare, Integer> compareMultipleParallel(Collection<PdiffImageCompare> allImageCompare, int numberOfThreads){
 		return compareMultipleParallel((PdiffImageCompare[]) allImageCompare.toArray(new PdiffImageCompare[allImageCompare.size()]), numberOfThreads);
 	}
 	
+	/**
+	 * Compares multiple images parallel.
+	 * @param allImageCompare An array with all comparer objects.
+	 * @param numberOfThreads The number of threads, which should be executed.
+	 * @throws RuntimeException This exception is thrown when the size of both images are different. Setting a fixed size (with .setSizeScale) will prevent this exception. 
+	 * @return A HashMap, where the <b>key</b> is the comparer object and the <b>value</b> is the number of failed pixels.
+	 * @since 07.07.2015
+	 */
 	public static HashMap<PdiffImageCompare, Integer> compareMultipleParallel(PdiffImageCompare[] allImageCompare, int numberOfThreads){
 		HashMap<PdiffImageCompare, Integer> ret = new HashMap<PdiffImageCompare, Integer>();
 		nativeCompareFailedPixelsMultiple(allImageCompare, numberOfThreads, ret);
