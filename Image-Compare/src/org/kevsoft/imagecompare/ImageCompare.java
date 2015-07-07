@@ -62,17 +62,17 @@ public abstract class ImageCompare {
 	//Special Getter/Setter
 	public BufferedImage getFirstOptimizedImage(){
 		if(needOptimization()){
-			return optimizeImage(firstImage);
+			return ImageUtils.transformTo4ByteARGB(optimizeImage(firstImage));
 		}else{
-			return getFirstSourceImage();
+			return ImageUtils.transformTo4ByteARGB(getFirstSourceImage());
 		}
 	}
 	
 	public BufferedImage getSecondOptimizedImage(){
 		if(needOptimization()){
-			return optimizeImage(secondImage);
+			return ImageUtils.transformTo4ByteARGB(optimizeImage(secondImage));
 		}else{
-			return getSecondSourceImage();
+			return ImageUtils.transformTo4ByteARGB(getSecondSourceImage());
 		}
 		
 	}

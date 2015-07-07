@@ -32,6 +32,9 @@ IF(MINGW)
   set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS} -static-libgcc -static-libstdc++ -s")
 endif()
 
+#TODO: Static also for other platforms
+
+
 
 #includes
 MESSAGE( STATUS "[Image Compare] Adding JDK Includes" )

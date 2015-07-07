@@ -166,14 +166,11 @@ public class PdiffImageCompare extends ImageCompare {
 	 * @since 05.07.2015
 	 */
 	public int compare() throws RuntimeException {
-		BufferedImage img1Orig = getFirstOptimizedImage();
-		BufferedImage img2Orig = getSecondOptimizedImage();
-		
-		BufferedImage img1 = ImageUtils.transformTo4ByteARGB(img1Orig);
-		BufferedImage img2 = ImageUtils.transformTo4ByteARGB(img2Orig);
+		BufferedImage img1 = getFirstOptimizedImage();
+		BufferedImage img2 = getSecondOptimizedImage();
 		
 		if(img1.getWidth() != img2.getWidth() ||
-				img1.getHeight() != img2.getHeight()){
+				img1.getHeight() != img2.getHeight()) {
 			throw new RuntimeException("Different sizes in optimized Image!");
 		}
 		
@@ -192,19 +189,30 @@ public class PdiffImageCompare extends ImageCompare {
 		return 100.0 - ((double)compare()) / (double)totalPixels * 100.0;
 	}
 	
-	public static HashMap<PdiffImageCompare, Integer> compareMultiple(Collection<PdiffImageCompare> allImageCompare){
-		return compareMultipleParallel((PdiffImageCompare[]) allImageCompare.toArray(new PdiffImageCompare[allImageCompare.size()]));
+	
+	public static HashMap<PdiffImageCompare, Integer> compareMultipleParallel(Collection<PdiffImageCompare> allImageCompare){
+		return compareMultipleParallel((PdiffImageCompare[]) allImageCompare.toArray(new PdiffImageCompare[allImageCompare.size()]), Runtime.getRuntime().availableProcessors());
 	}
 	
 	public static HashMap<PdiffImageCompare, Integer> compareMultipleParallel(PdiffImageCompare[] allImageCompare){
+		return compareMultipleParallel(allImageCompare, Runtime.getRuntime().availableProcessors());
+	}
+	
+	public static HashMap<PdiffImageCompare, Integer> compareMultipleParallel(Collection<PdiffImageCompare> allImageCompare, int numberOfThreads){
+		return compareMultipleParallel((PdiffImageCompare[]) allImageCompare.toArray(new PdiffImageCompare[allImageCompare.size()]), numberOfThreads);
+	}
+	
+	public static HashMap<PdiffImageCompare, Integer> compareMultipleParallel(PdiffImageCompare[] allImageCompare, int numberOfThreads){
 		HashMap<PdiffImageCompare, Integer> ret = new HashMap<PdiffImageCompare, Integer>();
-		nativeCompareFailedPixelsMultiple(allImageCompare, ret);
+		nativeCompareFailedPixelsMultiple(allImageCompare, 8, ret); //TEMP 8
 		return ret;
 	}
 	
 	
+	
+	
 	//private natives:
 	private native int nativeCompareFailedPixels(byte[] pixOfImage1, int width1, int height1, byte[] pixOfImage2, int width2, int height2);
-	private static native void nativeCompareFailedPixelsMultiple(PdiffImageCompare[] allImageCompare, HashMap<PdiffImageCompare, Integer> out);
+	private static native void nativeCompareFailedPixelsMultiple(PdiffImageCompare[] allImageCompare, int numThreads, HashMap<PdiffImageCompare, Integer> out);
 	
 }

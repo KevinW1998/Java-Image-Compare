@@ -22,7 +22,6 @@ public:
     inline T pop() {
         T cmd;
         std::unique_lock<std::mutex> lck(mMutex);
-
         while (mQueue.empty()){
             mCond.wait(lck);
         }
@@ -30,6 +29,11 @@ public:
         mQueue.pop();
         mCond.notify_all();
         return cmd;
+    }
+
+    inline bool isEmpty() {
+        std::unique_lock<std::mutex> lck(mMutex);
+        return mQueue.empty();
     }
 
 };

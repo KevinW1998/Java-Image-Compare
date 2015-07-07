@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.Buffer;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
@@ -74,8 +75,6 @@ public class TestClass {
 	}
 
 	public static void multipleCompares() {
-		
-
 		BufferedImage goodQualityMercedes;
 		BufferedImage badQualityMercedes;
 		BufferedImage motorcycle;
@@ -94,8 +93,14 @@ public class TestClass {
 						new PdiffImageCompare(goodQualityMercedes, motorcycle),
 						new PdiffImageCompare(badQualityMercedes, motorcycle)};
 		
-		PdiffImageCompare.compareMultipleParallel(pdiffComparer);
-
+		for(int i = 0; i < pdiffComparer.length; i++) {
+			pdiffComparer[i].setSizeScale(new Dimension(600, 600));
+		}
+		
+		HashMap<PdiffImageCompare, Integer> results = PdiffImageCompare.compareMultipleParallel(pdiffComparer);
+		for(PdiffImageCompare nextComparer : pdiffComparer) {
+			System.out.println("Results: " + results.get(nextComparer)); 
+		}
 	}
 
 	public static void main(String[] args) {

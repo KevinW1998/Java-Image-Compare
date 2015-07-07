@@ -18,10 +18,10 @@ JNIEXPORT jint JNICALL Java_org_kevsoft_imagecompare_PdiffImageCompare_nativeCom
 /*
  * Class:     org_kevsoft_imagecompare_PdiffImageCompare
  * Method:    nativeCompareFailedPixelsMultiple
- * Signature: ([Lorg/kevsoft/imagecompare/PdiffImageCompare;Ljava/util/HashMap;)V
+ * Signature: ([Lorg/kevsoft/imagecompare/PdiffImageCompare;ILjava/util/HashMap;)V
  */
 JNIEXPORT void JNICALL Java_org_kevsoft_imagecompare_PdiffImageCompare_nativeCompareFailedPixelsMultiple
-  (JNIEnv *, jclass, jobjectArray, jobject);
+  (JNIEnv *, jclass, jobjectArray, jint, jobject);
 
 #ifdef __cplusplus
 }
