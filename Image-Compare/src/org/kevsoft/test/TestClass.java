@@ -25,32 +25,6 @@ import org.kevsoft.imagecompare.SimpleImageCompare;
  */
 public class TestClass {
 
-	public static void compare(String imagePfadA, String imagePfadB) { // vergleicht
-																		// zwei
-																		// Arrays
-																		// auf
-																		// Gleichheit
-		NearImageCompare nic;
-		try {
-			nic = new NearImageCompare(ImageIO.read(new File(imagePfadA)), ImageIO.read(new File(imagePfadB)));
-			nic.setSizeScale(new Dimension(600, 600));
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
-		System.out.println("==============");
-		try {
-			double compareVal = nic.compare();
-
-			System.out.println(imagePfadA + " <=> " + imagePfadB);
-			System.out.println("Similarity: " + compareVal);
-			nic.compareColor();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		System.out.println("==============");
-	}
-
 	public static void pdiffCompare(String imagePfadA, String imagePfadB) {
 		PdiffImageCompare pdiff;
 		BufferedImage img1;
