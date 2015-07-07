@@ -25,7 +25,7 @@ public class TestClass2 {
 		BufferedWriter bw = new BufferedWriter(new FileWriter(ausgabedateipfad));
 		bw.write("fov;colorfactor 0;colorfactor 0.5;colorfactor 1");
 		int d= 1;
-		while ( d < 90) {
+		while ( d < 3) {
 
 			PdiffImageCompare pdiff;
 			BufferedImage img1;
