@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.ArrayList.*;
+import java.util.HashMap;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -15,35 +16,47 @@ import javax.imageio.ImageIO;
 import org.kevsoft.imagecompare.PdiffImageCompare;
 
 public class TestClass2 {
-
+	
 	public static void test(String imagePfadA, String imagePfadB) throws IOException {
 		ArrayList<Double> liste = new ArrayList<Double>();
+		ArrayList<PdiffImageCompare> pa = new ArrayList<PdiffImageCompare>();
+		HashMap map = new HashMap();
 //		BufferedWriter bw = new BufferedWriter(new FileWriter(ausgabedateipfad));
-		double d = 1;
-		while (d < 90) {
-			PdiffImageCompare pdiff;   
+		
+		for (int d =1 ; d < 90;d++) {
+			
+//			PdiffImageCompare pdiff;   
 			   BufferedImage img1;
 			   BufferedImage img2;
 			   try {
 				   img1 = ImageIO.read(new File(imagePfadA));
 				   img2 = ImageIO.read(new File(imagePfadB));
-				   pdiff = new PdiffImageCompare(img1, img2);
-				   pdiff.setSizeScale(new Dimension(600, 450));
+//				   pdiff = new PdiffImageCompare(img1, img2);
+				   PdiffImageCompare p= new PdiffImageCompare (img1, img2);
+				   p.setFov(d);
+				   p.setSizeScale(new Dimension (600,450));
+				   pa.add(p);
+				  
+				   
+//				   pdiff.setSizeScale(new Dimension(600, 450));
 			   }catch(Exception e) {
 				   e.printStackTrace();
 		    	   return;
 			   }
-			   pdiff.setFov(d);
-			double erg = pdiff.compare();
-			liste.add (erg);
+//			   pdiff.setFov(d);
+//			double erg = pdiff.compareMultipleParallel();
+//			liste.add (erg);
+//			System.out.println(erg);
 			
-			d++;
+			 
 		}
+		HashMap <PdiffImageCompare, Integer> hm = PdiffImageCompare.compareMultipleParallel(pa); 
+		for (int i=0; i<pa.size();i++ ){
 			
-			for (int i=0; i< liste.size(); i++){
-//				bw.write("/n"+liste.get(i) );
-				System.out.println(liste.get(i));
-			}
+			int pixelsfailed= hm.get(pa.get(i)).intValue();
+			System.out.println(pixelsfailed);
+		}
+		 
 			
 			
 			
