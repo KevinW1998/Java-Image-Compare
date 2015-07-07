@@ -12,9 +12,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 import org.kevsoft.imagecompare.ImageUtils;
-import org.kevsoft.imagecompare.NearImageCompare;
 import org.kevsoft.imagecompare.PdiffImageCompare;
-import org.kevsoft.imagecompare.SimpleImageCompare;
 
 /**
  * Testklasse
