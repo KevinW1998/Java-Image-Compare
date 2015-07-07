@@ -97,14 +97,14 @@ public class TestClass {
 			pdiffComparer[i].setSizeScale(new Dimension(600, 600));
 		}
 		
-		HashMap<PdiffImageCompare, Integer> results = PdiffImageCompare.compareMultipleParallel(pdiffComparer);
+		//HashMap<PdiffImageCompare, Integer> results = PdiffImageCompare.compareMultipleParallel(pdiffComparer);
+		HashMap<PdiffImageCompare, Double> resultPercent = PdiffImageCompare.comparePercentMultipleParallel(pdiffComparer);
 		for(PdiffImageCompare nextComparer : pdiffComparer) {
-			System.out.println("Results: " + results.get(nextComparer)); 
+			System.out.println("Results: " + resultPercent.get(nextComparer) + "%"); 
 		}
 	}
 
 	public static void main(String[] args) {
-		//pdiffCompare("pdifftest_mercedes.jpg", "pdifftest_mercedes1.jpg");
 		multipleCompares();
 	}
 }

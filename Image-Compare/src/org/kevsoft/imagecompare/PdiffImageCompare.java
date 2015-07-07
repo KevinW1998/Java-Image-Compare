@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * This class is using the pdiff algorithm to compare two images. It however requires the native library "pdiffLib".
@@ -189,6 +190,33 @@ public class PdiffImageCompare extends ImageCompare {
 		return 100.0 - ((double)compare()) / (double)totalPixels * 100.0;
 	}
 	
+	public static HashMap<PdiffImageCompare, Double> comparePercentMultipleParallel(Collection<PdiffImageCompare> allImageCompare){
+		return comparePercentMultipleParallel((PdiffImageCompare[]) allImageCompare.toArray(new PdiffImageCompare[allImageCompare.size()]), Runtime.getRuntime().availableProcessors());
+	}
+	
+	public static HashMap<PdiffImageCompare, Double> comparePercentMultipleParallel(PdiffImageCompare[] allImageCompare){
+		return comparePercentMultipleParallel(allImageCompare, Runtime.getRuntime().availableProcessors());
+	}
+	
+	public static HashMap<PdiffImageCompare, Double> comparePercentMultipleParallel(Collection<PdiffImageCompare> allImageCompare, int numberOfThreads){
+		return comparePercentMultipleParallel((PdiffImageCompare[]) allImageCompare.toArray(new PdiffImageCompare[allImageCompare.size()]), numberOfThreads);
+	}
+	
+	public static HashMap<PdiffImageCompare, Double> comparePercentMultipleParallel(PdiffImageCompare[] allImageCompare, int numberOfThreads){
+		HashMap<PdiffImageCompare, Integer> ret = new HashMap<PdiffImageCompare, Integer>();
+		nativeCompareFailedPixelsMultiple(allImageCompare, numberOfThreads, ret);
+		
+		HashMap<PdiffImageCompare, Double> percentRet = new HashMap<PdiffImageCompare, Double>();
+		for(Entry<PdiffImageCompare, Integer> entry : ret.entrySet()) {
+			PdiffImageCompare pdiffObj = entry.getKey();
+			BufferedImage nextImg = pdiffObj.getFirstOptimizedImage();
+			int totalPixels = nextImg.getWidth() * nextImg.getHeight();
+			
+			percentRet.put(pdiffObj, new Double(100.0 - (entry.getValue().doubleValue()) / (double)totalPixels * 100.0));
+		}
+		return percentRet;
+	}
+	
 	
 	public static HashMap<PdiffImageCompare, Integer> compareMultipleParallel(Collection<PdiffImageCompare> allImageCompare){
 		return compareMultipleParallel((PdiffImageCompare[]) allImageCompare.toArray(new PdiffImageCompare[allImageCompare.size()]), Runtime.getRuntime().availableProcessors());
@@ -204,7 +232,7 @@ public class PdiffImageCompare extends ImageCompare {
 	
 	public static HashMap<PdiffImageCompare, Integer> compareMultipleParallel(PdiffImageCompare[] allImageCompare, int numberOfThreads){
 		HashMap<PdiffImageCompare, Integer> ret = new HashMap<PdiffImageCompare, Integer>();
-		nativeCompareFailedPixelsMultiple(allImageCompare, 8, ret); //TEMP 8
+		nativeCompareFailedPixelsMultiple(allImageCompare, numberOfThreads, ret);
 		return ret;
 	}
 	
