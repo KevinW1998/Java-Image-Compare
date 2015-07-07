@@ -94,6 +94,11 @@ extern "C" JNIEXPORT JNIEXPORT void JNICALL Java_org_kevsoft_imagecompare_PdiffI
         jobject bufferedImageFirst = env->CallObjectMethod(nextObj, getFirstOptImageMethod);
         jobject bufferedImageSecond = env->CallObjectMethod(nextObj, getSecondOptImageMethod);
 
+        if(!bufferedImageFirst || !bufferedImageSecond){
+            env->ThrowNew(env->FindClass("java/lang/OutOfMemoryError"), "Failed to allocate memory for optimized pdiff image!");
+            return;
+        }
+
         jclass bufferedImageClass = env->GetObjectClass(bufferedImageFirst);
         jmethodID bufferedImageGetWidthMethodID = env->GetMethodID(bufferedImageClass, "getWidth", "()I");
         jmethodID bufferedImageGetHeightMethodID = env->GetMethodID(bufferedImageClass, "getHeight", "()I");
@@ -115,6 +120,10 @@ extern "C" JNIEXPORT JNIEXPORT void JNICALL Java_org_kevsoft_imagecompare_PdiffI
         // Get pixel byte array object
         jobject byteArrayObject1 = env->CallStaticObjectMethod(imageUtilClass, getBytes, bufferedImageFirst);
         jobject byteArrayObject2 = env->CallStaticObjectMethod(imageUtilClass, getBytes, bufferedImageSecond);
+        if(!byteArrayObject1 || !byteArrayObject2){
+            env->ThrowNew(env->FindClass("java/lang/OutOfMemoryError"), "Failed to allocate memory for optimized pdiff image byte array!");
+            return;
+        }
 
         // Convert to byte array
         jbyteArray* byteArray1 = reinterpret_cast<jbyteArray*>(&byteArrayObject1);
