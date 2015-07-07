@@ -1,5 +1,6 @@
 package org.kevsoft.test;
 
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.ArrayList.*;
@@ -15,11 +16,11 @@ import org.kevsoft.imagecompare.PdiffImageCompare;
 
 public class TestClass2 {
 
-	public static void test(String imagePfadA, String imagePfadB, String ausgabedateipfad) throws IOException {
+	public static void test(String imagePfadA, String imagePfadB) throws IOException {
 		ArrayList<Double> liste = new ArrayList<Double>();
-		BufferedWriter bw = new BufferedWriter(new FileWriter(ausgabedateipfad));
-		double d = 0;
-		while (d < 89) {
+//		BufferedWriter bw = new BufferedWriter(new FileWriter(ausgabedateipfad));
+		double d = 1;
+		while (d < 90) {
 			PdiffImageCompare pdiff;   
 			   BufferedImage img1;
 			   BufferedImage img2;
@@ -27,7 +28,7 @@ public class TestClass2 {
 				   img1 = ImageIO.read(new File(imagePfadA));
 				   img2 = ImageIO.read(new File(imagePfadB));
 				   pdiff = new PdiffImageCompare(img1, img2);
-				   //pdiff.setSizeScale(new Dimension(600, 600));
+				   pdiff.setSizeScale(new Dimension(600, 450));
 			   }catch(Exception e) {
 				   e.printStackTrace();
 		    	   return;
@@ -36,19 +37,21 @@ public class TestClass2 {
 			double erg = pdiff.compare();
 			liste.add (erg);
 			
-			
+			d++;
+		}
 			
 			for (int i=0; i< liste.size(); i++){
-				bw.write("/n"+liste.get(i) );
+//				bw.write("/n"+liste.get(i) );
+				System.out.println(liste.get(i));
 			}
 			
-			d= d+ 0.1;
+			
 			
 		}
 
-	}
+	
 
 	public static void main(String args[]) throws IOException {
-		test("motorrad.jpg", "motorrad.jpg","./Users/larry/Documents/Entwickler Umgebung/java/ausgabe.csv");
+		test("wohnung1.jpg", "wohnung2.jpg");
 	}
 }
