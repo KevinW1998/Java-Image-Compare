@@ -60,6 +60,21 @@ extern "C" JNIEXPORT jint JNICALL Java_org_kevsoft_imagecompare_PdiffImageCompar
 
 }
 
+#define CHECK_JCLASS(jvm_env, clsVar, clsName) \
+    if(!clsVar) {\
+        std::string errMsg = "Did not find class ";\
+        errMsg += clsName;\
+        jvm_env->ThrowNew(jvm_env->FindClass("java/lang/ClassNotFoundException"), errMsg.c_str());\
+        return;\
+    }
+
+#define CHECK_JMETHODID(jvm_env, methodIDVar, methodName) \
+    if(!methodIDVar) {\
+        std::string errMsg = "Did not find method ";\
+        errMsg += methodName;\
+        jvm_env->ThrowNew(jvm_env->FindClass("java/lang/NoSuchMethodError"), errMsg.c_str());\
+        return;\
+    }
 
 extern "C" JNIEXPORT JNIEXPORT void JNICALL Java_org_kevsoft_imagecompare_PdiffImageCompare_nativeCompareFailedPixelsMultiple
     (JNIEnv *env, jclass /*staticPdiffClass*/, jobjectArray objectToTest, jint numThreads, jobject outHashMap){
@@ -76,6 +91,11 @@ extern "C" JNIEXPORT JNIEXPORT void JNICALL Java_org_kevsoft_imagecompare_PdiffI
     jclass ImageUtilsClass = env->FindClass("org/kevsoft/imagecompare/ImageUtils");
     jclass BufferedImageClass = env->FindClass("java/awt/image/BufferedImage");
 
+    CHECK_JCLASS(env, PdiffImageCompareClass, "org.kevsoft.imagecompare.PdiffImageCompare")
+    CHECK_JCLASS(env, ImageCompareClass, "org.kevsoft.imagecompare.ImageCompare")
+    CHECK_JCLASS(env, ImageUtilsClass, "org.kevsoft.imagecompare.ImageUtils")
+    CHECK_JCLASS(env, BufferedImageClass, "java.awt.image.BufferedImage")
+
     jmethodID ImageCompare_getFirstOptimizedImageMethodID = env->GetMethodID(ImageCompareClass, "getFirstOptimizedImage", "()Ljava/awt/image/BufferedImage;");
     jmethodID ImageCompare_getSecondOptimizedImageMethodID = env->GetMethodID(ImageCompareClass, "getSecondOptimizedImage", "()Ljava/awt/image/BufferedImage;");
 
@@ -83,6 +103,12 @@ extern "C" JNIEXPORT JNIEXPORT void JNICALL Java_org_kevsoft_imagecompare_PdiffI
     jmethodID BufferedImage_getHeightMethodID = env->GetMethodID(BufferedImageClass, "getHeight", "()I");
 
     jmethodID ImageUtils_getBytePixelsMethodID = env->GetStaticMethodID(ImageUtilsClass, "getBytePixels", "(Ljava/awt/image/BufferedImage;)[B");
+
+    CHECK_JMETHODID(env, ImageCompare_getFirstOptimizedImageMethodID, "org.kevsoft.imagecompare.ImageCompare.getFirstOptimizedImage");
+    CHECK_JMETHODID(env, ImageCompare_getSecondOptimizedImageMethodID, "org.kevsoft.imagecompare.ImageCompare.getSecondOptimizedImage");
+    CHECK_JMETHODID(env, BufferedImage_getWidthMethodID, "java.awt.image.BufferedImage.getWidth");
+    CHECK_JMETHODID(env, BufferedImage_getHeightMethodID, "java.awt.image.BufferedImage.getHeight");
+    CHECK_JMETHODID(env, ImageUtils_getBytePixelsMethodID, "org.kevsoft.imagecompare.ImageUtils.getBytePixels");
 
 
     ThreadedQueue<std::pair<jobject, std::shared_ptr<CompareArgs> > > in;
