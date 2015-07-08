@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import org.kevsoft.util.NativeUtils;
 
 /**
@@ -20,16 +19,16 @@ import org.kevsoft.util.NativeUtils;
  * @version 05.07.2015
  */
 public class PdiffImageCompare extends ImageCompare {
-	/* Only modify this class with caution!
-	 * The native part depends on:
+	/*
+	 * Only modify this class with caution! The native part depends on:
 	 * 
-	 * All fields of PdiffImageCompare
-	 * The ImageCompare superclass (getFirstOptimizedImage, getSecondOptimizedImage)
-	 * ImageUtil.getBytePixels
+	 * All fields of PdiffImageCompare The ImageCompare superclass
+	 * (getFirstOptimizedImage, getSecondOptimizedImage) ImageUtil.getBytePixels
 	 * 
-	 * Modification of those might result into a crash. Be sure to update the native pdiffLib too!
+	 * Modification of those might result into a crash. Be sure to update the
+	 * native pdiffLib too!
 	 */
-	
+
 	static {
 		boolean success = false;
 		try {
@@ -63,7 +62,7 @@ public class PdiffImageCompare extends ImageCompare {
 				// Try next one
 			}
 		}
-		
+
 		// Try linux
 		if (!success) {
 			try {
@@ -75,8 +74,8 @@ public class PdiffImageCompare extends ImageCompare {
 				// Try next one
 			}
 		}
-		
-		if(!success)
+
+		if (!success)
 			throw new RuntimeException("Failed to load pdiff!");
 
 	}
