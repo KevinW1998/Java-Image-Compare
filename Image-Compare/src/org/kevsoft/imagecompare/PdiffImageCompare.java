@@ -20,6 +20,16 @@ import org.kevsoft.util.NativeUtils;
  * @version 05.07.2015
  */
 public class PdiffImageCompare extends ImageCompare {
+	/* Only modify this class with caution!
+	 * The native part depends on:
+	 * 
+	 * All fields of PdiffImageCompare
+	 * The ImageCompare superclass (getFirstOptimizedImage, getSecondOptimizedImage)
+	 * ImageUtil.getBytePixels
+	 * 
+	 * Modification of those might result into a crash. Be sure to update the native pdiffLib too!
+	 */
+	
 	static {
 		boolean success = false;
 		try {

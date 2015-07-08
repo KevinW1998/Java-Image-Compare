@@ -67,6 +67,23 @@ extern "C" JNIEXPORT JNIEXPORT void JNICALL Java_org_kevsoft_imagecompare_PdiffI
     //system_clock::time_point current = system_clock::now();
 
     int lengthOfArray = env->GetArrayLength(objectToTest);
+    //Don't use more threads than needed.
+    numThreads = std::min(lengthOfArray, (int)numThreads);
+
+    //Query all java classes and methods:
+    jclass PdiffImageCompareClass = env->FindClass("org/kevsoft/imagecompare/PdiffImageCompare");
+    jclass ImageCompareClass = env->GetSuperclass(PdiffImageCompareClass);
+    jclass ImageUtilsClass = env->FindClass("org/kevsoft/imagecompare/ImageUtils");
+    jclass BufferedImageClass = env->FindClass("java/awt/image/BufferedImage");
+
+    jmethodID ImageCompare_getFirstOptimizedImageMethodID = env->GetMethodID(ImageCompareClass, "getFirstOptimizedImage", "()Ljava/awt/image/BufferedImage;");
+    jmethodID ImageCompare_getSecondOptimizedImageMethodID = env->GetMethodID(ImageCompareClass, "getSecondOptimizedImage", "()Ljava/awt/image/BufferedImage;");
+
+    jmethodID BufferedImage_getWidthMethodID = env->GetMethodID(BufferedImageClass, "getWidth", "()I");
+    jmethodID BufferedImage_getHeightMethodID = env->GetMethodID(BufferedImageClass, "getHeight", "()I");
+
+    jmethodID ImageUtils_getBytePixelsMethodID = env->GetStaticMethodID(ImageUtilsClass, "getBytePixels", "(Ljava/awt/image/BufferedImage;)[B");
+
 
     ThreadedQueue<std::pair<jobject, std::shared_ptr<CompareArgs> > > in;
     ThreadedQueue<std::pair<jobject, int> > out;
@@ -75,51 +92,35 @@ extern "C" JNIEXPORT JNIEXPORT void JNICALL Java_org_kevsoft_imagecompare_PdiffI
     for(int i = 0; i < lengthOfArray; ++i){
         jobject nextObj = env->GetObjectArrayElement(objectToTest, i);
 
-        // Get data
-        jclass compareClass = env->GetObjectClass(nextObj);
-        jclass imageCompareClass = env->GetSuperclass(compareClass);
-
-        jdouble fov = env->GetDoubleField(nextObj, env->GetFieldID(compareClass, "fov", "D"));
-        jdouble gamma = env->GetDoubleField(nextObj, env->GetFieldID(compareClass, "gamma", "D"));
-        jdouble luminance = env->GetDoubleField(nextObj, env->GetFieldID(compareClass, "luminance", "D"));
-        jboolean luminanceonly = env->GetBooleanField(nextObj, env->GetFieldID(compareClass, "luminanceonly", "Z"));
-        jdouble colorfactor = env->GetDoubleField(nextObj, env->GetFieldID(compareClass, "colorfactor", "D"));
-        jint downsample = env->GetIntField(nextObj, env->GetFieldID(compareClass, "downsample", "I"));
-
-        // Get both optimized image methods:
-        jmethodID getFirstOptImageMethod = env->GetMethodID(imageCompareClass, "getFirstOptimizedImage", "()Ljava/awt/image/BufferedImage;");
-        jmethodID getSecondOptImageMethod = env->GetMethodID(imageCompareClass, "getSecondOptimizedImage", "()Ljava/awt/image/BufferedImage;");
+        jdouble fov = env->GetDoubleField(nextObj, env->GetFieldID(PdiffImageCompareClass, "fov", "D"));
+        jdouble gamma = env->GetDoubleField(nextObj, env->GetFieldID(PdiffImageCompareClass, "gamma", "D"));
+        jdouble luminance = env->GetDoubleField(nextObj, env->GetFieldID(PdiffImageCompareClass, "luminance", "D"));
+        jboolean luminanceonly = env->GetBooleanField(nextObj, env->GetFieldID(PdiffImageCompareClass, "luminanceonly", "Z"));
+        jdouble colorfactor = env->GetDoubleField(nextObj, env->GetFieldID(PdiffImageCompareClass, "colorfactor", "D"));
+        jint downsample = env->GetIntField(nextObj, env->GetFieldID(PdiffImageCompareClass, "downsample", "I"));
 
         // Get both buffered images:
-        jobject bufferedImageFirst = env->CallObjectMethod(nextObj, getFirstOptImageMethod);
-        jobject bufferedImageSecond = env->CallObjectMethod(nextObj, getSecondOptImageMethod);
+        jobject bufferedImageFirst = env->CallObjectMethod(nextObj, ImageCompare_getFirstOptimizedImageMethodID);
+        jobject bufferedImageSecond = env->CallObjectMethod(nextObj, ImageCompare_getSecondOptimizedImageMethodID);
 
         if(!bufferedImageFirst || !bufferedImageSecond){
             env->ThrowNew(env->FindClass("java/lang/OutOfMemoryError"), "Failed to allocate memory for optimized pdiff image!");
             return;
         }
 
-        jclass bufferedImageClass = env->GetObjectClass(bufferedImageFirst);
-        jmethodID bufferedImageGetWidthMethodID = env->GetMethodID(bufferedImageClass, "getWidth", "()I");
-        jmethodID bufferedImageGetHeightMethodID = env->GetMethodID(bufferedImageClass, "getHeight", "()I");
-
-        jint width1 = env->CallIntMethod(bufferedImageFirst, bufferedImageGetWidthMethodID);
-        jint height1 = env->CallIntMethod(bufferedImageFirst, bufferedImageGetHeightMethodID);
-        jint width2 = env->CallIntMethod(bufferedImageSecond, bufferedImageGetWidthMethodID);
-        jint height2 = env->CallIntMethod(bufferedImageSecond, bufferedImageGetHeightMethodID);
+        jint width1 = env->CallIntMethod(bufferedImageFirst, BufferedImage_getWidthMethodID);
+        jint height1 = env->CallIntMethod(bufferedImageFirst, BufferedImage_getHeightMethodID);
+        jint width2 = env->CallIntMethod(bufferedImageSecond, BufferedImage_getWidthMethodID);
+        jint height2 = env->CallIntMethod(bufferedImageSecond, BufferedImage_getHeightMethodID);
 
         if(width1 != width2 || height1 != height2){
             env->ThrowNew(env->FindClass("java/lang/RuntimeException"), "Different sizes in optimized Image!");
             return;
         }
 
-        // Get ImageUtil class:
-        jclass imageUtilClass = env->FindClass("org/kevsoft/imagecompare/ImageUtils");
-        jmethodID getBytes = env->GetStaticMethodID(imageUtilClass, "getBytePixels", "(Ljava/awt/image/BufferedImage;)[B");
-
         // Get pixel byte array object
-        jobject byteArrayObject1 = env->CallStaticObjectMethod(imageUtilClass, getBytes, bufferedImageFirst);
-        jobject byteArrayObject2 = env->CallStaticObjectMethod(imageUtilClass, getBytes, bufferedImageSecond);
+        jobject byteArrayObject1 = env->CallStaticObjectMethod(ImageUtilsClass, ImageUtils_getBytePixelsMethodID, bufferedImageFirst);
+        jobject byteArrayObject2 = env->CallStaticObjectMethod(ImageUtilsClass, ImageUtils_getBytePixelsMethodID, bufferedImageSecond);
         if(!byteArrayObject1 || !byteArrayObject2){
             env->ThrowNew(env->FindClass("java/lang/OutOfMemoryError"), "Failed to allocate memory for optimized pdiff image byte array!");
             return;

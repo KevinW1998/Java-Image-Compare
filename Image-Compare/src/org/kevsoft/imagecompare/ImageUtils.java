@@ -18,6 +18,8 @@ public class ImageUtils {
 		return pixels;
 	}
 	
+	// Required by native PdiffImageCompare
+	// Only modify with caution!
 	public static byte[] getBytePixels(BufferedImage img) {
 		return ((DataBufferByte)img.getRaster().getDataBuffer()).getData();
 	}
