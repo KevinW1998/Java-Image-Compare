@@ -88,18 +88,19 @@ public class PdiffImageCompare extends ImageCompare {
 	private int downsample;
 
 	public PdiffImageCompare() {
+		this(null, null);
+	}
+
+	public PdiffImageCompare(BufferedImage img1, BufferedImage img2) {
+		super(img1, img2);
+		setFirstSourceImage(img1);
+		setSecondSourceImage(img2);
 		fov = 45.0;
 		gamma = 2.2;
 		luminance = 100.0;
 		luminanceonly = false;
 		colorfactor = 1.0;
 		downsample = 0;
-	}
-
-	public PdiffImageCompare(BufferedImage img1, BufferedImage img2) {
-		this();
-		setFirstSourceImage(img1);
-		setSecondSourceImage(img2);
 	}
 
 	/**
