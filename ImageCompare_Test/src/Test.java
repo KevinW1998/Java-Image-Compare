@@ -82,10 +82,11 @@ public class Test {
 		ArrayList<PdiffImageCompare> pa1 = new ArrayList<PdiffImageCompare>();		
 		ArrayList<PdiffImageCompare> pa2 = new ArrayList<PdiffImageCompare>();
 		
+		
 		BufferedWriter bw = new BufferedWriter(new FileWriter(ausgabedateipfad));
 		bw.write("fov;colorfactor 0;colorfactor 0.5;colorfactor 1");
 
-
+		
 
 		for (int d = 1; d < 90; d++) {
 
@@ -114,8 +115,8 @@ public class Test {
 				pa.add(p);
 				pa1.add(p1);
 				pa2.add(p2);
-
-				// pdiff.setSizeScale(new Dimension(600, 450));
+				
+			
 			} catch (Exception e) {
 				e.printStackTrace();
 				return;
@@ -140,6 +141,7 @@ public class Test {
 			percent2= percent2.replace('.',',');
 			
 			bw.write("\n"+ fov+";"+ percent +";" + percent1  +";" + percent2  );
+			
 		}
 		bw.close();
 
@@ -147,6 +149,6 @@ public class Test {
 
 	public static void main(String args[]) throws IOException {
 //		testSingle("wohnung1.jpg", "wohnung2.jpg","diagramm.csv");
-		test("wohnung1+wassertext.jpg", "wohnung1.jpg","wassertext.csv");
+		test("zimmer1.jpg", "zimmer1LeichtVerschoben.jpg","leichtverschoben.csv");
 	}
 }
