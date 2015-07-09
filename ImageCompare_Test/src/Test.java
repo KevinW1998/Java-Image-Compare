@@ -147,6 +147,6 @@ public class Test {
 
 	public static void main(String args[]) throws IOException {
 //		testSingle("wohnung1.jpg", "wohnung2.jpg","diagramm.csv");
-		test("wohnung1+wassertext.jpg", "wohnung1.jpg","wassertext.csv");
+		test("wohnung1.jpg", "wohnung1verschwommen.jpg","wohnungverschwommen.csv");
 	}
 }
