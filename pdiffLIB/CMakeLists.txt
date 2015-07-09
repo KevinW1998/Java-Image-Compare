@@ -6,6 +6,7 @@
 # Examples:
 # --> -DJDK_PATH:PATH="C:\Program Files (x86)\Java\jdk1.8.0_20" -DUSE_FREEIMAGE:BOOL=OFF -DCOMPILE_EXECUTABLE:BOOL=OFF
 # --> -DJDK_PATH:PATH="C:\Program Files (x86)\Java\jdk1.8.0_25" -DUSE_FREEIMAGE:BOOL=OFF -DCOMPILE_EXECUTABLE:BOOL=OFF
+# --> -DJDK_PATH:PATH="/usr/lib/jvm/java-1.8.0-openjdk-amd64" -DUSE_FREEIMAGE:BOOL=OFF -DCOMPILE_EXECUTABLE:BOOL=OFF
 
 # bin is the recommended build folder!
 
@@ -30,6 +31,12 @@ IF(MINGW)
   set(CMAKE_CXX_FLAGS "-Wl,--kill-at ${CMAKE_CXX_FLAGS} -static -static-libgcc -static-libstdc++")
   set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_C_FLAGS} -static-libgcc -s")
   set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS} -static-libgcc -static-libstdc++ -s")
+ELSE()
+  MESSAGE( STATUS "[Image Compare] Using NON-MINGW, building static" )
+  #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static-libgcc")
+  #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
+  #set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_C_FLAGS} -static-libgcc -s")
+  #set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS} -static-libgcc -static-libstdc++ -s")
 endif()
 
 #TODO: Static also for other platforms
@@ -45,6 +52,7 @@ FIND_PATH(JDK_INCLUDES_DIR jni.h
 FIND_PATH(JDK_MD_INCLUDES_DIR jni_md.h
   ${JDK_PATH}/include/win32 # for windows
   ${JDK_PATH}/Contents/Home/include/darwin # for mac
+  ${JDK_PATH}/include/linux #for ubuntu
 )
 
 IF(JDK_INCLUDES_DIR)
