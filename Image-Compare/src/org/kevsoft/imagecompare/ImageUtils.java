@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
-import java.awt.image.Raster;
 
 public class ImageUtils {
 	public static int[] getPixels(BufferedImage img){
@@ -30,7 +29,7 @@ public class ImageUtils {
 		int h = img.getHeight();
 		BufferedImage after = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		AffineTransform at = new AffineTransform();
-		at.scale(2.0, 2.0);
+		at.scale(factor, factor);
 		AffineTransformOp scaleOp = 
 		   new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
 		after = scaleOp.filter(img, after);

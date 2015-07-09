@@ -1,11 +1,9 @@
 package org.kevsoft.imagecompare;
 
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Map.Entry;
 import org.kevsoft.util.NativeUtils;
 
@@ -251,6 +249,7 @@ public class PdiffImageCompare extends ImageCompare {
 	 *             This exception is thrown when the size of both images are
 	 *             different. Setting a fixed size (with .setSizeScale) will
 	 *             prevent this exception.
+	 * @throws NullPointerException If the first or the second image is null.
 	 * @since 02.04.2015
 	 */
 	public boolean compare(int thresholdPixels) throws RuntimeException {
@@ -266,6 +265,7 @@ public class PdiffImageCompare extends ImageCompare {
 	 *             This exception is thrown when the size of both images are
 	 *             different. Setting a fixed size (with .setSizeScale) will
 	 *             prevent this exception.
+	 * @throws NullPointerException If the first or the second image is null.
 	 * @since 05.07.2015
 	 */
 	public int compare() throws RuntimeException {
@@ -287,6 +287,7 @@ public class PdiffImageCompare extends ImageCompare {
 	 *             This exception is thrown when the size of both images are
 	 *             different. Setting a fixed size (with .setSizeScale) will
 	 *             prevent this exception.
+	 * @throws NullPointerException If the first or the second image is null.
 	 * @since 05.07.2015
 	 */
 	public double comparePercent() throws RuntimeException {
@@ -303,6 +304,7 @@ public class PdiffImageCompare extends ImageCompare {
 	 *            A collection with all comparer objects.
 	 * @return A HashMap, where the <b>key</b> is the comparer object and the
 	 *         <b>value</b> is the similarity in percent.
+	 * @throws NullPointerException If the first or the second image is null.
 	 * @since 07.07.2015
 	 */
 	public static HashMap<PdiffImageCompare, Double> comparePercentMultipleParallel(Collection<PdiffImageCompare> allImageCompare) {
@@ -319,6 +321,7 @@ public class PdiffImageCompare extends ImageCompare {
 	 *             This exception is thrown when the size of both images are
 	 *             different. Setting a fixed size (with .setSizeScale) will
 	 *             prevent this exception.
+	 * @throws NullPointerException If the first or the second image is null.
 	 * @return A HashMap, where the <b>key</b> is the comparer object and the
 	 *         <b>value</b> is the similarity in percent.
 	 * @since 07.07.2015
@@ -339,6 +342,7 @@ public class PdiffImageCompare extends ImageCompare {
 	 *             This exception is thrown when the size of both images are
 	 *             different. Setting a fixed size (with .setSizeScale) will
 	 *             prevent this exception.
+	 * @throws NullPointerException If the first or the second image is null.
 	 * @return A HashMap, where the <b>key</b> is the comparer object and the
 	 *         <b>value</b> is the similarity in percent.
 	 * @since 07.07.2015
@@ -359,6 +363,7 @@ public class PdiffImageCompare extends ImageCompare {
 	 *             This exception is thrown when the size of both images are
 	 *             different. Setting a fixed size (with .setSizeScale) will
 	 *             prevent this exception.
+	 * @throws NullPointerException If the first or the second image is null.
 	 * @return A HashMap, where the <b>key</b> is the comparer object and the
 	 *         <b>value</b> is the similarity in percent.
 	 * @since 07.07.2015
@@ -388,6 +393,7 @@ public class PdiffImageCompare extends ImageCompare {
 	 *             This exception is thrown when the size of both images are
 	 *             different. Setting a fixed size (with .setSizeScale) will
 	 *             prevent this exception.
+	 * @throws NullPointerException If the first or the second image is null.
 	 * @return A HashMap, where the <b>key</b> is the comparer object and the
 	 *         <b>value</b> is the number of failed pixels.
 	 * @since 07.07.2015
@@ -406,6 +412,7 @@ public class PdiffImageCompare extends ImageCompare {
 	 *             This exception is thrown when the size of both images are
 	 *             different. Setting a fixed size (with .setSizeScale) will
 	 *             prevent this exception.
+	 * @throws NullPointerException If the first or the second image is null.
 	 * @return A HashMap, where the <b>key</b> is the comparer object and the
 	 *         <b>value</b> is the number of failed pixels.
 	 * @since 07.07.2015
@@ -425,6 +432,7 @@ public class PdiffImageCompare extends ImageCompare {
 	 *             This exception is thrown when the size of both images are
 	 *             different. Setting a fixed size (with .setSizeScale) will
 	 *             prevent this exception.
+	 * @throws NullPointerException If the first or the second image is null.
 	 * @return A HashMap, where the <b>key</b> is the comparer object and the
 	 *         <b>value</b> is the number of failed pixels.
 	 * @since 07.07.2015
@@ -444,6 +452,7 @@ public class PdiffImageCompare extends ImageCompare {
 	 *             This exception is thrown when the size of both images are
 	 *             different. Setting a fixed size (with .setSizeScale) will
 	 *             prevent this exception.
+	 * @throws NullPointerException If the first or the second image is null.
 	 * @return A HashMap, where the <b>key</b> is the comparer object and the
 	 *         <b>value</b> is the number of failed pixels.
 	 * @since 07.07.2015

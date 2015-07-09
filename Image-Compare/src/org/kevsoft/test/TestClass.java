@@ -5,13 +5,10 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.Buffer;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
 
-import org.kevsoft.imagecompare.ImageUtils;
 import org.kevsoft.imagecompare.PdiffImageCompare;
 
 /**
