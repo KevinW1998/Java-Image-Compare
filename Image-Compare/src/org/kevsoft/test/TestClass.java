@@ -53,8 +53,8 @@ public class TestClass {
 
 		try {
 			goodQualityMercedes = ImageIO.read(new File("pdifftest_mercedes.jpg"));
-			badQualityMercedes = ImageIO.read(new File("pdifftest_mercedes1.jpg"));
-			motorcycle = ImageIO.read(new File("pdifftest_motorrad.jpg"));
+			badQualityMercedes = ImageIO.read(new File("pdifftest_mercedes.jpg"));
+			motorcycle = ImageIO.read(new File("pdifftest_mercedes.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 			return;
