@@ -50,22 +50,31 @@ public class TestClass {
 
 		try {
 			goodQualityMercedes = ImageIO.read(new File("pdifftest_mercedes.jpg"));
-			badQualityMercedes = ImageIO.read(new File("pdifftest_mercedes.jpg"));
-			motorcycle = ImageIO.read(new File("pdifftest_mercedes.jpg"));
+			badQualityMercedes = ImageIO.read(new File("pdifftest_mercedes1.jpg"));
+			motorcycle = ImageIO.read(new File("pdifftest_motorrad.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 			return;
 		}
-
+		
+		PdiffImageCompare goodbadMercedes = new PdiffImageCompare(goodQualityMercedes, badQualityMercedes);
+		PdiffImageCompare goodMercedes_motorcycle = new PdiffImageCompare(goodQualityMercedes, motorcycle);
+		PdiffImageCompare badMercedes_motorcycle = new PdiffImageCompare(badQualityMercedes, motorcycle);
+		
 		PdiffImageCompare[] pdiffComparer = new PdiffImageCompare[]
-				{new PdiffImageCompare(goodQualityMercedes, badQualityMercedes),
-						new PdiffImageCompare(goodQualityMercedes, motorcycle),
-						new PdiffImageCompare(badQualityMercedes, motorcycle)};
+				{goodbadMercedes,
+					goodMercedes_motorcycle,
+					badMercedes_motorcycle};
 		
 		for(int i = 0; i < pdiffComparer.length; i++) {
 			pdiffComparer[i].setSizeScale(new Dimension(600, 600));
 		}
 		
+		/*
+		goodbadMercedes.setScalefactor(3.0);
+		BufferedImage img1 = goodbadMercedes.getFirstOptimizedImage();
+		System.out.println("goodbadMercedes optimzed size: width: " + img1.getHeight() + " height: " + img1.getWidth());
+		*/
 		HashMap<PdiffImageCompare, Double> resultPercent = PdiffImageCompare.comparePercentMultipleParallel(pdiffComparer);
 		for(PdiffImageCompare nextComparer : pdiffComparer) {
 			System.out.println("Results: " + resultPercent.get(nextComparer) + "%"); 

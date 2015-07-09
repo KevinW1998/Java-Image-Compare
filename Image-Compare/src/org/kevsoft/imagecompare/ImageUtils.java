@@ -25,14 +25,13 @@ public class ImageUtils {
 	
 	
 	public static BufferedImage scale(double factor, BufferedImage img){
-		int w = img.getWidth();
-		int h = img.getHeight();
-		BufferedImage after = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage after = new BufferedImage((int)(factor*img.getWidth()), (int)(factor*img.getHeight()), BufferedImage.TYPE_4BYTE_ABGR);
 		AffineTransform at = new AffineTransform();
 		at.scale(factor, factor);
 		AffineTransformOp scaleOp = 
 		   new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
-		after = scaleOp.filter(img, after);
+		after = scaleOp.filter(img, after);		
+		
 		return after;
 	}
 	

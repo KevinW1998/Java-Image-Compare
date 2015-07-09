@@ -30,7 +30,7 @@ public class PdiffImageCompare extends ImageCompare {
 	static {
 		boolean success = false;
 		try {
-			System.loadLibrary("pdiff");
+			System.loadLibrary("libpdiff");
 			success = true;
 		} catch (UnsatisfiedLinkError e) {
 			// Try next one

@@ -127,7 +127,9 @@ extern "C" JNIEXPORT JNIEXPORT void JNICALL Java_org_kevsoft_imagecompare_PdiffI
 
         // Get both buffered images:
         jobject bufferedImageFirst = env->CallObjectMethod(nextObj, ImageCompare_getFirstOptimizedImageMethodID);
+        if(env->ExceptionCheck()){return;}
         jobject bufferedImageSecond = env->CallObjectMethod(nextObj, ImageCompare_getSecondOptimizedImageMethodID);
+        if(env->ExceptionCheck()){return;}
 
         if(!bufferedImageFirst || !bufferedImageSecond){
             env->ThrowNew(env->FindClass("java/lang/OutOfMemoryError"), "Failed to allocate memory for optimized pdiff image!");
