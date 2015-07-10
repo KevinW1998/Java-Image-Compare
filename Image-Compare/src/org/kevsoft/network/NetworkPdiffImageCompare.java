@@ -3,7 +3,6 @@ package org.kevsoft.network;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import org.kevsoft.imagecompare.PdiffImageCompare;
 public class NetworkPdiffImageCompare {
 
 	private static class NetworkCompareResults {
-		public BufferedImage nextImage;
+		public BufferedImage usedImage;
 		public BufferedImage highestResultImage;
 		public double comparePercentResult;
 	}
@@ -35,7 +34,7 @@ public class NetworkPdiffImageCompare {
 		
 		NetworkCompareResults highestResult = new NetworkCompareResults();
 		highestResult.comparePercentResult = 0.0;
-		highestResult.nextImage = nextImage;
+		highestResult.usedImage = nextImage;
 		for(Entry<PdiffImageCompare, Double> nextResult : allResult.entrySet()) {
 			if(highestResult.comparePercentResult < nextResult.getValue()) {
 				highestResult.comparePercentResult = nextResult.getValue();

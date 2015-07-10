@@ -81,6 +81,8 @@ extern "C" JNIEXPORT JNIEXPORT void JNICALL Java_org_kevsoft_imagecompare_PdiffI
     //using namespace std::chrono;
     //system_clock::time_point current = system_clock::now();
 
+
+
     int lengthOfArray = env->GetArrayLength(objectToTest);
     //Don't use more threads than needed.
     numThreads = std::min(lengthOfArray, (int)numThreads);
@@ -212,13 +214,25 @@ extern "C" JNIEXPORT JNIEXPORT void JNICALL Java_org_kevsoft_imagecompare_PdiffI
         std::pair<jobject, int> nextResult = out.pop();
 
         jclass intClass = env->FindClass("java/lang/Integer");
-        jmethodID intClassConstructorMethodID = env->GetMethodID(intClass, "<init>", "(I)V");
-        jobject newIntObj = env->NewObject(intClass, intClassConstructorMethodID, nextResult.second);
+        CHECK_JCLASS(env, intClass, "java.lang.Integer");
 
+        jmethodID intClassConstructorMethodID = env->GetMethodID(intClass, "<init>", "(I)V");
+        CHECK_JMETHODID(env, intClassConstructorMethodID, "java.lang.Integer.<init>");
+
+        jobject newIntObj = env->NewObject(intClass, intClassConstructorMethodID, nextResult.second);
+        if(!newIntObj){
+            env->ThrowNew(env->FindClass("java/lang/OutOfMemoryError"), "Failed to allocate memory for results!");
+            return;
+        }
 
         jclass hashMapClass = env->GetObjectClass(outHashMap);
+        CHECK_JCLASS(env, hashMapClass, "java.util.HashMap");
+
         jmethodID hashMapPutMethodID = env->GetMethodID(hashMapClass, "put", "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;");
+        CHECK_JMETHODID(env, hashMapPutMethodID, "java.util.HashMap.put");
+
         env->CallObjectMethod(outHashMap, hashMapPutMethodID, nextResult.first, newIntObj);
+
 
         env->DeleteLocalRef(newIntObj);
     }
