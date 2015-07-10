@@ -4,12 +4,16 @@ package org.kevsoft.test;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 
 import org.kevsoft.imagecompare.PdiffImageCompare;
+import org.kevsoft.network.NetworkPdiffImageCompare;
 
 /**
  * Testklasse
@@ -80,8 +84,43 @@ public class TestClass {
 			System.out.println("Results: " + resultPercent.get(nextComparer) + "%"); 
 		}
 	}
+	
+	public static String[] readList(File file) throws FileNotFoundException {
+		ArrayList<String> urlList = new ArrayList<String>();
+		
+		Scanner sc = new Scanner(file);
+		while(sc.hasNextLine()) {
+			String nextLine = sc.nextLine();
+			if(!nextLine.isEmpty())
+				urlList.add(nextLine);
+		}
+		sc.close();
+		
+		return (String[]) urlList.toArray(new String[urlList.size()]);
+	}
+	
+	public static void compareTwoUrlList(String fileWithUrls1, String fileWithUrls2) {
+		try {
+			double completeResult = NetworkPdiffImageCompare.compareAcross(readList(new File(fileWithUrls1)),
+					readList(new File(fileWithUrls2)));
+			System.out.println("Complete result: " + completeResult);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static void main(String[] args) {
-		multipleCompares();
+		compareTwoUrlList("pdifftest_links_bazar.txt", "pdifftest_links_wohnnet.txt");
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
