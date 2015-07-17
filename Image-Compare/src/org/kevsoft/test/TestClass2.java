@@ -112,8 +112,44 @@ public class TestClass2 {
 		}
 
 	}
+	
+	public static void testeasy (String pfad1, String pfad2 ){
+		
+		
+		
 
+
+			PdiffImageCompare pdiff;
+			BufferedImage img1;
+			BufferedImage img2;
+			try {
+				img1 = ImageIO.read(new File(pfad1));
+				img2 = ImageIO.read(new File(pfad2));
+				pdiff = new PdiffImageCompare(img1, img2);
+
+				pdiff.setSizeScale(new Dimension(600, 450));
+				
+				pdiff.setGamma(1);
+				System.out.println( pdiff.comparePercent());			
+				
+				
+				
+			
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				return;
+			}
+			
+			
+		}
+		
+		
+		
+		
+	
 	public static void main(String args[]) throws IOException {
-		testSingle("wohnung1.jpg", "wohnung2.jpg","E:\\Irian\\Image-Compare\\ausgabedatei.csv");
+//		testSingle("wohnung1.jpg", "wohnung2.jpg","E:\\Irian\\Image-Compare\\ausgabedatei.csv");
+		testeasy ("mercedes.jpg","wohnung2.jpg");
 	}
 }
