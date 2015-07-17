@@ -151,9 +151,9 @@ public abstract class ImageCompare {
 		
 		if (forceRenderFirstImage || cachedFirstImage == null) {
 			if (needOptimization()) {
-				cachedFirstImage = ImageUtils.transformTo4ByteARGB(optimizeImage(firstImage));
+				cachedFirstImage = ImageUtils.transformTo4ByteABGR(optimizeImage(firstImage));
 			} else {
-				cachedFirstImage = ImageUtils.transformTo4ByteARGB(getFirstSourceImage());
+				cachedFirstImage = ImageUtils.transformTo4ByteABGR(getFirstSourceImage());
 			}
 			forceRenderFirstImage = false;
 		}
@@ -173,9 +173,9 @@ public abstract class ImageCompare {
 		
 		if (forceRenderSecondImage || cachedSecondImage == null) {
 			if (needOptimization()) {
-				cachedSecondImage = ImageUtils.transformTo4ByteARGB(optimizeImage(secondImage));
+				cachedSecondImage = ImageUtils.transformTo4ByteABGR(optimizeImage(secondImage));
 			} else {
-				cachedSecondImage = ImageUtils.transformTo4ByteARGB(getSecondSourceImage());
+				cachedSecondImage = ImageUtils.transformTo4ByteABGR(getSecondSourceImage());
 			}
 			forceRenderSecondImage = false;
 		}

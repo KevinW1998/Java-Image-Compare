@@ -24,6 +24,11 @@ if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
 #include <FreeImage.h>
 #endif
 
+#define EXCEPT_R_MASK 0xFF00FFFF
+#define ONLY_R_MASK ~EXCEPT_R_MASK
+#define EXCEPT_B_MASK 0xFFFFFF00
+#define ONLY_B_MASK ~EXCEPT_B_MASK
+
 /** Class encapsulating an image containing R,G,B,A channels.
  *
  * Internal representation assumes data is in the ABGR format, with the RGB
@@ -61,6 +66,19 @@ public:
     static RGBAImage* newImageByData(int w, int h, unsigned char* data){
         RGBAImage* img = new RGBAImage(w,h);
         std::memcpy(img->Data, data, w*h*4);
+        return img;
+    }
+
+    static RGBAImage* newImageByABGRData(int w, int h, unsigned char* data){
+        RGBAImage* img = new RGBAImage(w,h);
+        unsigned int* rawIntData = reinterpret_cast<unsigned int*>(data);
+        unsigned int*& imgData = img->Data;
+        for(int i = 0; i < w*h; ++i){
+            unsigned int nextPix = rawIntData[i];
+            unsigned int r = (nextPix & ONLY_R_MASK) >> 16;
+            unsigned int b = nextPix & ONLY_B_MASK;
+            imgData[i] = (nextPix & EXCEPT_R_MASK & EXCEPT_B_MASK) | (b << 16) | r;
+        }
         return img;
     }
 

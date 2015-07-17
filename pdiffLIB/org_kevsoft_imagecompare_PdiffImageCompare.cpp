@@ -33,8 +33,8 @@ extern "C" JNIEXPORT jint JNICALL Java_org_kevsoft_imagecompare_PdiffImageCompar
     jint downsample = env->GetIntField(theCompareObject, env->GetFieldID(compareClass, "downsample", "I"));
 
     CompareArgs args;
-    args.ImgA = RGBAImage::newImageByData(width1, height1, (unsigned char*)iPixOfImage1);
-    args.ImgB = RGBAImage::newImageByData(width2, height2, (unsigned char*)iPixOfImage2);
+    args.ImgA = RGBAImage::newImageByABGRData(width1, height1, (unsigned char*)iPixOfImage1);
+    args.ImgB = RGBAImage::newImageByABGRData(width2, height2, (unsigned char*)iPixOfImage2);
 
     args.ThresholdPixels = -1;
     args.FieldOfView = (float)fov;
@@ -43,6 +43,25 @@ extern "C" JNIEXPORT jint JNICALL Java_org_kevsoft_imagecompare_PdiffImageCompar
     args.LuminanceOnly = luminanceonly;
     args.ColorFactor = (float)colorfactor;
     args.DownSample = downsample;
+
+    //Apply downsample
+    if(args.DownSample > 0){
+        for (int i = 0; i < args.DownSample; i++) {
+           RGBAImage*& ImgA = args.ImgA;
+           RGBAImage*& ImgB = args.ImgB;
+           RGBAImage *tmp = ImgA->DownSample();
+           if (tmp) {
+              delete ImgA;
+              ImgA = tmp;
+           }
+           tmp = ImgB->DownSample();
+           if (tmp) {
+              delete ImgB;
+              ImgB = tmp;
+           }
+        }
+    }
+
 
     args.outputDebugTime = false;
     args.Verbose = false;
@@ -139,9 +158,13 @@ extern "C" JNIEXPORT JNIEXPORT void JNICALL Java_org_kevsoft_imagecompare_PdiffI
         }
 
         jint width1 = env->CallIntMethod(bufferedImageFirst, BufferedImage_getWidthMethodID);
+        if(env->ExceptionCheck()){return;}
         jint height1 = env->CallIntMethod(bufferedImageFirst, BufferedImage_getHeightMethodID);
+        if(env->ExceptionCheck()){return;}
         jint width2 = env->CallIntMethod(bufferedImageSecond, BufferedImage_getWidthMethodID);
+        if(env->ExceptionCheck()){return;}
         jint height2 = env->CallIntMethod(bufferedImageSecond, BufferedImage_getHeightMethodID);
+        if(env->ExceptionCheck()){return;}
 
         if(width1 != width2 || height1 != height2){
             env->ThrowNew(env->FindClass("java/lang/RuntimeException"), "Different sizes in optimized Image!");
@@ -150,7 +173,9 @@ extern "C" JNIEXPORT JNIEXPORT void JNICALL Java_org_kevsoft_imagecompare_PdiffI
 
         // Get pixel byte array object
         jobject byteArrayObject1 = env->CallStaticObjectMethod(ImageUtilsClass, ImageUtils_getBytePixelsMethodID, bufferedImageFirst);
+        if(env->ExceptionCheck()){return;}
         jobject byteArrayObject2 = env->CallStaticObjectMethod(ImageUtilsClass, ImageUtils_getBytePixelsMethodID, bufferedImageSecond);
+        if(env->ExceptionCheck()){return;}
         if(!byteArrayObject1 || !byteArrayObject2){
             env->ThrowNew(env->FindClass("java/lang/OutOfMemoryError"), "Failed to allocate memory for optimized pdiff image byte array!");
             return;
@@ -165,8 +190,8 @@ extern "C" JNIEXPORT JNIEXPORT void JNICALL Java_org_kevsoft_imagecompare_PdiffI
         jbyte* iPixOfImage2 = env->GetByteArrayElements(*byteArray2, NULL);
 
         std::shared_ptr<CompareArgs> args = std::shared_ptr<CompareArgs>(new CompareArgs());
-        args->ImgA = RGBAImage::newImageByData(width1, height1, (unsigned char*)iPixOfImage1);
-        args->ImgB = RGBAImage::newImageByData(width2, height2, (unsigned char*)iPixOfImage2);
+        args->ImgA = RGBAImage::newImageByABGRData(width1, height1, (unsigned char*)iPixOfImage1);
+        args->ImgB = RGBAImage::newImageByABGRData(width2, height2, (unsigned char*)iPixOfImage2);
 
         args->ThresholdPixels = -1;
         args->FieldOfView = (float)fov;
@@ -193,6 +218,24 @@ extern "C" JNIEXPORT JNIEXPORT void JNICALL Java_org_kevsoft_imagecompare_PdiffI
         threads.emplace_back([&in, &out](){
             while(!in.isEmpty()){
                 std::pair<jobject, std::shared_ptr<CompareArgs> > nextComparing = in.pop();
+
+                //Apply downsample
+                if(nextComparing.second->DownSample > 0){
+                    for (int i = 0; i < nextComparing.second->DownSample; i++) {
+                       RGBAImage*& ImgA = nextComparing.second->ImgA;
+                       RGBAImage*& ImgB = nextComparing.second->ImgB;
+                       RGBAImage *tmp = ImgA->DownSample();
+                       if (tmp) {
+                          delete ImgA;
+                          ImgA = tmp;
+                       }
+                       tmp = ImgB->DownSample();
+                       if (tmp) {
+                          delete ImgB;
+                          ImgB = tmp;
+                       }
+                    }
+                }
 
                 bool success = Yee_Compare(*(nextComparing.second));
                 if(!success){
@@ -232,6 +275,7 @@ extern "C" JNIEXPORT JNIEXPORT void JNICALL Java_org_kevsoft_imagecompare_PdiffI
         CHECK_JMETHODID(env, hashMapPutMethodID, "java.util.HashMap.put");
 
         env->CallObjectMethod(outHashMap, hashMapPutMethodID, nextResult.first, newIntObj);
+        if(env->ExceptionCheck()){return;}
 
 
         env->DeleteLocalRef(newIntObj);

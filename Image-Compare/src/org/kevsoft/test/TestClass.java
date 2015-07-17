@@ -104,13 +104,14 @@ public class TestClass {
 			double completeResult = NetworkPdiffImageCompare.compareAcross(readList(new File(fileWithUrls1)),
 					readList(new File(fileWithUrls2)));
 			System.out.println("Complete result: " + completeResult);
+			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public static void main(String[] args) {
-		compareTwoUrlList("pdifftest_links_bazar.txt", "pdifftest_links_wohnnet.txt");
+		compareTwoUrlList("pdifftest_links_kongresssiedlung_immobilien.txt", "pdifftest_links_kongresssiedlung_willhaben.txt");
 	}
 	
 	

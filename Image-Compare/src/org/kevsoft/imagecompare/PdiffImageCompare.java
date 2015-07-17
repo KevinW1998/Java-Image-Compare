@@ -28,54 +28,7 @@ public class PdiffImageCompare extends ImageCompare {
 	 */
 
 	static {
-		boolean success = false;
-		try {
-			System.loadLibrary("libpdiff");
-			success = true;
-		} catch (UnsatisfiedLinkError e) {
-			// Try next one
-		}
-
-		// Try to load directly from jar file.
-		// Try windows
-		if (!success) {
-			try {
-				NativeUtils.loadLibraryFromJar("/resources/libpdiff.dll");
-				success = true;
-			} catch (UnsatisfiedLinkError e) {
-				throw e;
-			} catch (IOException e) {
-				// Try next one
-			}
-		}
-
-		// Try mac
-		if (!success) {
-			try {
-				NativeUtils.loadLibraryFromJar("/resources/libpdiff.dylib");
-				success = true;
-			} catch (UnsatisfiedLinkError e) {
-				throw e;
-			} catch (IOException e) {
-				// Try next one
-			}
-		}
-
-		// Try linux
-		if (!success) {
-			try {
-				NativeUtils.loadLibraryFromJar("/resources/libpdiff.so");
-				success = true;
-			} catch (UnsatisfiedLinkError e) {
-				throw e;
-			} catch (IOException e) {
-				// Try next one
-			}
-		}
-
-		if (!success)
-			throw new RuntimeException("Failed to load pdiff!");
-
+		NativeUtils.loadLibrarySmart("resources", "pdiff");
 	}
 
 	private double fov;

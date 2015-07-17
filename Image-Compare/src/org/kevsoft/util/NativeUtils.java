@@ -12,7 +12,10 @@ import java.io.OutputStream;
  * Simple library class for working with JNI (Java Native Interface)
  * 
  * @see http://adamheinrich.com/2012/how-to-load-native-jni-library-from-jar
- * @see http://web.archive.org/web/20150418215650/http://adamheinrich.com/blog/2012/how-to-load-native-jni-library-from-jar/
+ * @see http://web.archive.org/web/20150418215650/http://adamheinrich.com/blog/
+ *      2012/how-to-load-native-jni-library-from-jar/
+ *      
+ * @author Kevin Waldock
  * @author Adam Heirnich <adam@adamh.cz>, http://www.adamh.cz
  */
 public class NativeUtils {
@@ -21,6 +24,73 @@ public class NativeUtils {
 	 * Private constructor - this class will never be instanced
 	 */
 	private NativeUtils() {
+	}
+
+	private static boolean loadLibraryNoExcept(String libname) {
+		try {
+			System.loadLibrary(libname);
+			return true;
+		} catch (UnsatisfiedLinkError e) {
+			return false;
+		}
+	}
+	
+	private static boolean loadLibraryJarNoExcept(String path) {
+		try {
+			loadLibraryFromJar(path);
+			return true;
+		} catch (IOException e) {
+			return false;
+		}
+	}
+	
+
+	/**
+	 * Will first try to load native library by java.library.path. If this fails
+	 * then the JAR resource will be checked:
+	 * 
+	 * jar: /{path}/{arch}bit/lib{libname}.{ending}
+	 * 
+	 * where {arch} is the "bitness" (32 or 64) where {ending} is the system
+	 * specific library ending.
+	 * 
+	 * @param path
+	 *            equals {path}
+	 * @param libname
+	 *            equals {libname}
+	 * @throws RuntimeException If the native library failed to load.
+	 * 
+	 * @since 17.07.2015
+	 */
+	public static void loadLibrarySmart(String path, String libname) {
+		if (!path.startsWith("/"))
+			path = "/" + path;
+		
+		String arch = System.getProperty("sun.arch.data.model");
+		String mappedLibName = System.mapLibraryName(libname);
+
+		if (loadLibraryNoExcept(libname))
+			return;
+
+		if (!libname.startsWith("lib")) {
+			if (loadLibraryNoExcept("lib" + libname))
+				return;
+		}
+
+		try {
+			if(loadLibraryJarNoExcept(path + "/" + arch + "bit/" + mappedLibName))
+				return;
+			if(loadLibraryJarNoExcept(path + "/" + arch + "bit/lib" + mappedLibName))
+				return;
+		} catch (UnsatisfiedLinkError e) {
+			throw new RuntimeException("Failed to load \"" + libname + "\" library due to link error", e);
+		}
+		
+		throw new RuntimeException("Failed to find \"" + libname + "\" library. Following paths has been checked: \n"
+				+ "in java.library.path for " + libname + "\n"
+				+ "in java.library.path for lib" + libname + "\n"
+				+ "in jar:" + path + "/" + arch + "bit/" + mappedLibName + "\n"
+				+ "in jar:" + path + "/" + arch + "bit/lib" + mappedLibName);
 	}
 
 	/**
@@ -104,10 +174,9 @@ public class NativeUtils {
 		// Finally, load the library
 		System.load(temp.getAbsolutePath());
 
-		
-		
 		// Fix for windows!
-		// See: http://web.archive.org/web/20150418215650/http://adamheinrich.com/blog/2012/how-to-load-native-jni-library-from-jar/#comment-1754835848
+		// See:
+		// http://web.archive.org/web/20150418215650/http://adamheinrich.com/blog/2012/how-to-load-native-jni-library-from-jar/#comment-1754835848
 		final String libraryPrefix = prefix;
 		final String lockSuffix = ".lock";
 
