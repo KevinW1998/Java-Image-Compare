@@ -17,6 +17,7 @@ You can use maven to build the library.
 2. Be sure to have a compiler configured (I recommend MinGw/g++)
 3. Set following variables
    Either use: 
+   
    * JDK_PATH  -  Will try to find out the library path (jvm.lib, jvm.dylib, jvm.so), the include file path (jni.h) and the include file path for the md file (jni_md.h)
    
    or if the above fails to configure, you can set these three variables:
