@@ -16,15 +16,14 @@ You can use maven to build the library.
 1. Configure the project with cmake. 
 2. Be sure to have a compiler configured (I recommend MinGw/g++)
 3. Set following variables
-   
    Either use: 
-   JDK_PATH  -  Will try to find out the library path (jvm.lib, jvm.dylib, jvm.so), the include file path (jni.h) and the include file path for the md file (jni_md.h)
+   * JDK_PATH  -  Will try to find out the library path (jvm.lib, jvm.dylib, jvm.so), the include file path (jni.h) and the include file path for the md file (jni_md.h)
    
    or if the above fails to configure, you can set these three variables:
    
-   JDK_PATH_INCLUDE_JNI       -  Path to jni.h
-   JDK_PATH_INCLUDE_JNI_MD    -  Path to jni_md.h
-   JDK_PATH_LIBRARY           -  Path to jvm.lib (windows) or jvm.dylib (OS X) or jvm.so (Linux)
+   * JDK_PATH_INCLUDE_JNI       -  Path to jni.h
+   * JDK_PATH_INCLUDE_JNI_MD    -  Path to jni_md.h
+   * JDK_PATH_LIBRARY           -  Path to jvm.lib (windows) or jvm.dylib (OS X) or jvm.so (Linux)
 
 4. If you compiled your native library then copy your compiled library to /src/main/resources/natives/{arch}bit/{your library}
    Where {arch} is the architecture 32bit or 64bit. Be sure that your libary is called either libpdiff.dll, libpdiff.dylib, libpdiff.so.
