@@ -1,6 +1,6 @@
 # Special Folders
 /bin/
-/libs/FreeImage/Dist
+/target/
 
 # Special Files
 *.o

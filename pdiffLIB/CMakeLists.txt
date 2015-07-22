@@ -4,21 +4,22 @@
 # -DCOMPILE_EXECUTABLE:BOOL=ON
 
 # Examples:
-# --> -DJDK_PATH:PATH="C:\Program Files (x86)\Java\jdk1.8.0_20" -DUSE_FREEIMAGE:BOOL=OFF -DCOMPILE_EXECUTABLE:BOOL=OFF
-# --> -DJDK_PATH:PATH="C:\Program Files (x86)\Java\jdk1.8.0_25" -DUSE_FREEIMAGE:BOOL=OFF -DCOMPILE_EXECUTABLE:BOOL=OFF
-# --> -DJDK_PATH:PATH="/usr/lib/jvm/java-1.8.0-openjdk-amd64" -DUSE_FREEIMAGE:BOOL=OFF -DCOMPILE_EXECUTABLE:BOOL=OFF
+# --> -DJDK_PATH:PATH="C:\Program Files (x86)\Java\jdk1.8.0_20"
+# --> -DJDK_PATH:PATH="C:\Program Files (x86)\Java\jdk1.8.0_25"
+# --> -DJDK_PATH:PATH="/usr/lib/jvm/java-1.8.0-openjdk-amd64"
+
+# OR:
+# --> -DJDK_PATH_INCLUDE_JNI:PATH="C:\jdk\jdk1.8.0_45\include" -DJDK_PATH_INCLUDE_JNI_MD:PATH="C:\jdk\jdk1.8.0_45\include\win32" -DJDK_PATH_LIBRARY:FILEPATH="C:\jdk\jdk1.8.0_45\lib\jvm.lib"
 
 # bin is the recommended build folder!
 
 project(pdiff)
 
 # Settings
-set(JDK_PATH "C:/Java/jdk1.8.0_45" CACHE PATH "The path to the JDK")
-set(USE_FREEIMAGE ON CACHE BOOL "Set to on, if you want to use freeimage! (Free Image must be compiled!)")
-set(COMPILE_EXECUTABLE ON CACHE BOOL "Set to on, to compile the test unit/executable")
-MESSAGE( STATUS "[Image Compare] [User-Value] JDK Path:         " ${JDK_PATH} )
-
-
+set(JDK_PATH "" CACHE PATH "The path to the JDK")
+set(JDK_PATH_INCLUDE_JNI "" CACHE PATH "(Optional) The direct path to jni.h")
+set(JDK_PATH_INCLUDE_JNI_MD "" CACHE PATH "(Optional) The direct path to jni_md.h")
+set(JDK_PATH_LIBRARY "" CACHE FILEPATH "The direct filepath to the jni library")
 
 cmake_minimum_required(VERSION 2.8)
 aux_source_directory(. SRC_LIST)
@@ -33,38 +34,38 @@ IF(MINGW)
   set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS} -static-libgcc -static-libstdc++ -s")
 ELSE()
   MESSAGE( STATUS "[Image Compare] Using NON-MINGW, building static" )
-  #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static-libgcc")
-  #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
-  #set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_C_FLAGS} -static-libgcc -s")
-  #set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS} -static-libgcc -static-libstdc++ -s")
 endif()
 
-#TODO: Static also for other platforms
 
 
 
 #includes
 MESSAGE( STATUS "[Image Compare] Adding JDK Includes" )
-FIND_PATH(JDK_INCLUDES_DIR jni.h
-  ${JDK_PATH}/include # for windows and linux
-  ${JDK_PATH}/Contents/Home/include # for mac
-)
-FIND_PATH(JDK_MD_INCLUDES_DIR jni_md.h
-  ${JDK_PATH}/include/win32 # for windows
-  ${JDK_PATH}/Contents/Home/include/darwin # for mac
-  ${JDK_PATH}/include/linux #for ubuntu
-)
+IF(JDK_PATH)
+  FIND_PATH(JDK_INCLUDES_DIR jni.h
+    ${JDK_PATH}/include # for windows and linux
+    ${JDK_PATH}/Contents/Home/include # for mac
+  )
+  FIND_PATH(JDK_MD_INCLUDES_DIR jni_md.h
+    ${JDK_PATH}/include/win32 # for windows
+    ${JDK_PATH}/Contents/Home/include/darwin # for mac
+    ${JDK_PATH}/include/linux #for ubuntu
+  )
+ELSE()
+  set(JDK_INCLUDES_DIR ${JDK_PATH_INCLUDE_JNI})
+  set(JDK_MD_INCLUDES_DIR ${JDK_PATH_INCLUDE_JNI_MD})
+ENDIF(JDK_PATH)
 
-IF(JDK_INCLUDES_DIR)
+IF(IS_DIRECTORY ${JDK_INCLUDES_DIR})
   include_directories(${JDK_INCLUDES_DIR})
 ELSE()
   MESSAGE( SEND_ERROR "[Image Compare] Did not find JDK (jni.h) includes! Wrong JDK Path?" )
-ENDIF()
-IF(JDK_MD_INCLUDES_DIR)
+ENDIF(IS_DIRECTORY ${JDK_INCLUDES_DIR})
+IF(IS_DIRECTORY ${JDK_MD_INCLUDES_DIR})
   include_directories(${JDK_MD_INCLUDES_DIR})
 ELSE()
   MESSAGE( SEND_ERROR "[Image Compare] Did not find JDK (jni_md.h) includes! Wrong JDK Path?" )
-ENDIF()
+ENDIF(IS_DIRECTORY ${JDK_MD_INCLUDES_DIR})
 
 #libraries
 set(FILES_CORE PerceptualDiff.cpp Metric.h Metric.cpp LPyramid.h LPyramid.cpp RGBAImage.h RGBAImage.cpp CompareArgs.cpp CompareArgs.h ImageCompare.cpp ImageCompare.h util.h util.cpp ThreadedQueue.h)
@@ -74,74 +75,33 @@ set(FILES_JAVA org_kevsoft_imagecompare_PdiffImageCompare.cpp org_kevsoft_imagec
 MESSAGE( STATUS "[Image Compare] Adding JDK libraries" )
 
 # Find link dir
-FIND_LIBRARY(JDK_LINK_DIR jvm
+IF(JDK_PATH)
+  FIND_LIBRARY(JDK_LINK_DIR jvm
     ${JDK_PATH}/lib
     ${JDK_PATH}/jre/lib/amd64/server
     ${JDK_PATH}/Contents/Home/jre/lib/server
   )
+ELSE()
+  set(JDK_LINK_DIR ${JDK_PATH_LIBRARY})
+ENDIF(JDK_PATH)
+
 
 # Create library
 add_library(${PROJECT_NAME} SHARED ${FILES_CORE} ${FILES_JAVA})
-IF(COMPILE_EXECUTABLE)
-  add_executable(${PROJECT_NAME}-test ${FILES_CORE} executable/main.cpp)
-ENDIF(COMPILE_EXECUTABLE)
 # Hints for linker
 MESSAGE( STATUS "[Image Compare] Link JDK libraries" )
 
 
-IF(JDK_LINK_DIR)
+IF(EXISTS ${JDK_LINK_DIR})
   target_link_libraries(${PROJECT_NAME} ${JDK_LINK_DIR})
 ELSE()
   MESSAGE( SEND_ERROR "[Image Compare] Did not find JDK library!" )
-ENDIF(JDK_LINK_DIR)
+ENDIF(EXISTS ${JDK_LINK_DIR})
 
 
 MESSAGE( STATUS "[Image Compare] Set output path" )
 INSTALL(TARGETS ${PROJECT_NAME} DESTINATION bin)
 
-
-
-
-# Adding FreeImage
-IF(USE_FREEIMAGE)
-  MESSAGE( STATUS "[Image Compare] [USING FREEIMAGE]" )
-  add_definitions( -DDEF_USE_FREEIMAGE )
-  MESSAGE( STATUS "[Image Compare] Looking for FreeImage includes" )
-  FIND_PATH(FREEIMAGE_INCLUDE_DIR FreeImage.h
-    /usr/local/include
-    /usr/include
-    /opt/local/include
-    ../libs/FreeImage/Source
-  )
-
-  MESSAGE( STATUS "[Image Compare] Looking for FreeImage library" )
-  FIND_LIBRARY(FREEIMAGE_LIBRARY freeimage
-    /usr/lib
-    /usr/local/lib
-    /opt/local/lib
-    ../libs/FreeImage
-  )
-
-
-  IF(FREEIMAGE_INCLUDE_DIR)
-    MESSAGE( STATUS "[Image Compare] Set output path" )
-    IF(FREEIMAGE_LIBRARY)
-      SET( FREEIMAGE_FOUND "YES" )
-      SET( FREEIMAGE_LIBRARIES ${FREEIMAGE_LIBRARY} )
-    ELSE()
-      MESSAGE( SEND_ERROR "[Image Compare] Did not find FreeImage libraries!" )
-    ENDIF(FREEIMAGE_LIBRARY)
-  ELSE()
-    MESSAGE( SEND_ERROR "[Image Compare] Did not find FreeImage includes!" )
-  ENDIF(FREEIMAGE_INCLUDE_DIR)
-
-  IF(FREEIMAGE_FOUND)
-    INCLUDE_DIRECTORIES(${FREEIMAGE_INCLUDE_DIR})
-    TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${FREEIMAGE_LIBRARY})
-  ENDIF(FREEIMAGE_FOUND)
-ELSE()
-  MESSAGE( STATUS "[Image Compare] [USING NOT FREEIMAGE]" )
-ENDIF(USE_FREEIMAGE)
 
 # activate C++11
 MESSAGE( STATUS "[Image Compare] Force C++11 support" )
