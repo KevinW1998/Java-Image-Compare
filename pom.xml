@@ -6,7 +6,7 @@
   <name>Java Image Compare</name>
   <description>A Image Compare Library based on Perceptual Image Diff algorithm.</description>
   <build>
-    <sourceDirectory>Image-Compare/src</sourceDirectory>
+    <sourceDirectory>src/main/java</sourceDirectory>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>

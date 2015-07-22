@@ -28,7 +28,7 @@ public class PdiffImageCompare extends ImageCompare {
 	 */
 
 	static {
-		NativeUtils.loadLibrarySmart("natives", "pdiff");
+		NativeUtils.loadLibrarySmart("libnative", "pdiff");
 	}
 
 	private double fov;
