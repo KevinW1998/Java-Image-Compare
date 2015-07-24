@@ -9,7 +9,9 @@
 # --> -DJDK_PATH:PATH="/usr/lib/jvm/java-1.8.0-openjdk-amd64"
 
 # OR:
-# --> -DJDK_PATH_INCLUDE_JNI:PATH="C:\jdk\jdk1.8.0_45\include" -DJDK_PATH_INCLUDE_JNI_MD:PATH="C:\jdk\jdk1.8.0_45\include\win32" -DJDK_PATH_LIBRARY:FILEPATH="C:\jdk\jdk1.8.0_45\lib\jvm.lib"
+# --> -DJDK_PATH_INCLUDE_JNI:PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/include"
+# -DJDK_PATH_INCLUDE_JNI_MD:PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/include/darwin"
+# -DJDK_PATH_LIBRARY:FILEPATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/jre/lib/libjvm.dylib"
 
 # bin is the recommended build folder!
 
@@ -33,6 +35,8 @@ IF(MINGW)
   set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_C_FLAGS} -static-libgcc -s")
   set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS} -static-libgcc -static-libstdc++ -s")
 ELSE()
+  set(CMAKE_C_FLAGS "-std=c++11 ${CMAKE_C_FLAGS}")
+  set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
   MESSAGE( STATUS "[Image Compare] Using NON-MINGW, building static" )
 endif()
 
@@ -104,9 +108,6 @@ INSTALL(TARGETS ${PROJECT_NAME} DESTINATION bin)
 
 
 # activate C++11
-MESSAGE( STATUS "[Image Compare] Force C++11 support" )
-set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
-set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
 
 
 #target_link_libraries(${PROJECT_NAME} jvm)
