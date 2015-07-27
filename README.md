@@ -7,7 +7,7 @@ This library is based on the work of Perceptual Image Diff algorithm written in 
 ## Building java snapshot
 You can use maven to build the library.
 
-## Building the native library
+## Building the native library (Optional, only required if not exist in libnative resource folder)
 ### Requirements
 * CMake
 * A compiler of your choice.
