@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.kevsoft</groupId>
   <artifactId>java-image-compare</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0</version>
   <name>Java Image Compare</name>
   <description>A Image Compare Library based on Perceptual Image Diff algorithm.</description>
   <build>
